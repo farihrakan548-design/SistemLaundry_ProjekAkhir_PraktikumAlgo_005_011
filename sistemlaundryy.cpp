@@ -33,6 +33,13 @@ Node *buatNode(string nama, string layanan, float berat) {
 	}
 	newNode->totalHarga = berat * hargaPerKg;
 	return newNode;
+
+	//insert diawal linkedlist
+	void insertDiAwal(Node *&head, string nama, string layanan, float berat) {
+	Node *newNode = buatNode(nama, layanan, berat);
+	newNode->next = head;
+	head = newNode;
+	cout << "Pesanan berhasil ditambahkan dengan ID: " << newNode->id << endl;
 }
 
 int main(){
