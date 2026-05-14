@@ -33,15 +33,47 @@ Node *buatNode(string nama, string layanan, float berat) {
 	}
 	newNode->totalHarga = berat * hargaPerKg;
 	return newNode;
+}
 
-	//insert diawal linkedlist
-	void insertDiAwal(Node *&head, string nama, string layanan, float berat) {
+//insert diawal linkedlist
+void insertDiawal(Node *&head, string nama, string layanan, float berat) {
 	Node *newNode = buatNode(nama, layanan, berat);
 	newNode->next = head;
 	head = newNode;
-	cout << "Pesanan berhasil ditambahkan dengan ID: " << newNode->id << endl;
+	cout << "Pesanan Pertama berhasil ditambahkan dengan ID: " << newNode->id << endl;
 }
 
-int main(){
+void insertDiTengah(Node *&head, string nama, string layanan, float berat) {
+	Node *newNode = buatNode(nama, layanan, berat);
+	if (head == nullptr) {
+		head = newNode;
+		return;
+	} else {
+		Node *current = head;
+		while (current->next != nullptr) {
+			current = current->next;
+		}
+		current->next = newNode;
+		cout << "Pesanan Tengah berhasil ditambahkan dengan ID: " << newNode->id << endl;
+	}
+}
 
+void insertDiAkhir(Node *&head, string nama, string layanan, float berat) {
+	Node *newNode = buatNode(nama, layanan, berat);
+	if (head == nullptr) {
+		head = newNode;
+		return;
+	}
+	Node *current = head;
+	while (current->next != nullptr) {
+		current = current->next;
+	}
+	current->next = newNode;
+	cout << "Pesanan Terakhir berhasil ditambahkan dengan ID: " << newNode->id << endl;
+}
+
+
+
+
+int main(){
 }
