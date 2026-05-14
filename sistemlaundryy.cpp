@@ -78,6 +78,7 @@ void cetakHarga(float harga) {
 	cout << "Total Harga: Rp " << harga << endl;
 }
 
+//cetak satu node
 void cetakNode(Node *node) {
 	cout << "ID: " << node->id << endl;
 	cout << "Nama Pelanggan: " << node->namaPelanggan << endl;
@@ -87,6 +88,7 @@ void cetakNode(Node *node) {
 	cout << "Status: " << node->status << endl;
 }
 
+//cetak seluruh list
 void cetakList(Node *head) {
 	if (head == nullptr) {
 		cout << "Tidak ada pesanan." << endl;
@@ -98,4 +100,30 @@ void cetakList(Node *head) {
 		cout << "-------------------------" << endl;
 		current = current->next;
 	}
+}
+
+void hapusbyID(Node *&head, int id){
+	if (head == nullptr){
+		cout << " Daftar kosong." << endl;
+		return;
+	}
+	if (head->id == id){
+		Node *toDelete = head;
+		head = head->next;
+		cout << "Pesanan dengan ID " << id << "atas nama " << toDelete->namaPelanggan << " berhasil dihapus." << endl;
+		delete toDelete;
+		return;
+	}
+	Node *current = head;
+	while (current->next != nullptr && current->next->id != id) {
+		current = current->next;
+	}
+	if (current->next == nullptr) {
+		cout << "Pesanan dengan ID " << id << " tidak ditemukan." << endl;
+		return;
+	}
+	Node *toDelete = current->next;
+	current->next = toDelete->next;
+	cout << "Pesanan dengan ID " << id << "atas nama " << toDelete->namaPelanggan << " berhasil dihapus." << endl;
+	delete toDelete;
 }
