@@ -151,3 +151,12 @@ Node *caribyID(Node *head, int id) {
 	}
 	return nullptr;
 }
+
+void clearList(Node *&head) {
+	while (head != nullptr) {
+		Node *toDelete = head;
+		head = head->next;
+		delete toDelete;
+	}
+	cout << "Semua pesanan berhasil dihapus." << endl;
+}
