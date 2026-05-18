@@ -201,7 +201,7 @@ string tampiljenislayanan() {
 	}
 }
 
-int main()  {
+int main() {
 	Node *head = nullptr;
 
 	int pilihanMenu;
@@ -252,8 +252,23 @@ int main()  {
 			string jenisLayanan = tampiljenislayanan();
 
 			insertDiAkhir(head, nama, jenisLayanan, berat);
-		}
+		} else if (pilihanMenu == 4) {
+			cetakList(head);
+		} else if (pilihanMenu == 5) {
+			int idHapus;
 
+			cout << "Masukkan ID pesanan yang ingin dihapus: ";
+			cin >> idHapus;
+
+			hapusbyID(head, idHapus);
+		} else if (pilihanMenu == 6) {
+			string hapusNama;
+
+			cout << "Masukkan Nama pesanan yang ingin dihapus: ";
+			cin >> hapusNama;
+
+			hapusbyNama(head, hapusNama);
+		}
 	} while (pilihanMenu != 9);
 
 	return 0;
