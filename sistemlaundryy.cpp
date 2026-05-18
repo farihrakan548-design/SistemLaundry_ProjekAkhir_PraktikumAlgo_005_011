@@ -140,3 +140,14 @@ void updateStatus(Node *head, int id, string newStatus) {
 	}
 	cout << "Pesanan dengan ID " << id << " tidak ditemukan." << endl;
 }
+
+Node *caribyID(Node *head, int id) {
+	Node *current = head;
+	while (current != nullptr) {
+		if (current->id == id) {
+			return current;
+		}
+		current = current->next;
+	}
+	return nullptr;
+}
