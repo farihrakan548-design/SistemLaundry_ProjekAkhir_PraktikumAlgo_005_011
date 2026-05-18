@@ -175,7 +175,7 @@ void tampilmenu(){
 	cout << "Pilih menu: ";
 }
 
-string tampiljenislayanan(){
+string tampiljenislayanan() {
 	int pilihan;
 	string jenisLayanan;
 	cout << "=== Jenis Layanan Laundry ===" << endl;
@@ -184,25 +184,24 @@ string tampiljenislayanan(){
 	cout << "3. Setrika Saja (Rp 4000/Kg)" << endl;
 	cout << "Pilih jenis layanan: ";
 	cin >> pilihan;
-			cin.ignore(); // Bersihkan newline
-			if (pilihan < 1 || pilihan > 3) {
-				cout << "Pilihan tidak valid. Program akan keluar." << endl;
-				return "";
-			} else {
-				string jenisLayanan;
-				if (pilihan == 1) {
-					jenisLayanan = "Cuci Kering";
-				} else if (pilihan == 2) {
-					jenisLayanan = "Cuci Setrika";
-				} else {
-					jenisLayanan = "Setrika Saja";
-				}
-				return jenisLayanan;
-			}
-	
+	cin.ignore(); // Bersihkan newline
+	if (pilihan < 1 || pilihan > 3) {
+		cout << "Pilihan tidak valid. Program akan keluar." << endl;
+		return "";
+	} else {
+		string jenisLayanan;
+		if (pilihan == 1) {
+			jenisLayanan = "Cuci Kering";
+		} else if (pilihan == 2) {
+			jenisLayanan = "Cuci Setrika";
+		} else {
+			jenisLayanan = "Setrika Saja";
+		}
+		return jenisLayanan;
+	}
 }
 
-int main(){
+int main()  {
 	Node *head = nullptr;
 
 	int pilihanMenu;
@@ -210,9 +209,52 @@ int main(){
 		tampilmenu();
 		cin >> pilihanMenu;
 		cin.ignore();
+
+		if (pilihanMenu == 1) {
+			string nama;
+			float berat;
+
+			cout << "Masukkan nama pelanggan: ";
+			getline(cin, nama);
+
+			cout << "Masukkan berat cucian (Kg): ";
+			cin >> berat;
+			cin.ignore();
+
+			string jenisLayanan = tampiljenislayanan();
+
+			insertDiawal(head, nama, jenisLayanan, berat);
+		} else if (pilihanMenu == 2) {
+			string nama;
+			float berat;
+
+			cout << "Masukkan nama pelanggan: ";
+			getline(cin, nama);
+
+			cout << "Masukkan berat cucian (Kg): ";
+			cin >> berat;
+			cin.ignore();
+
+			string jenisLayanan = tampiljenislayanan();
+
+			insertDiTengah(head, nama, jenisLayanan, berat);
+		} else if (pilihanMenu == 3) {
+			string nama;
+			float berat;
+
+			cout << "Masukkan nama pelanggan: ";
+			getline(cin, nama);
+
+			cout << "Masukkan berat cucian (Kg): ";
+			cin >> berat;
+			cin.ignore();
+
+			string jenisLayanan = tampiljenislayanan();
+
+			insertDiAkhir(head, nama, jenisLayanan, berat);
+		}
+
 	} while (pilihanMenu != 9);
 
 	return 0;
-
-
 }
