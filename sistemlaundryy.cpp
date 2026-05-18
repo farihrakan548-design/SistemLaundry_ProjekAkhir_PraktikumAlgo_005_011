@@ -102,7 +102,7 @@ void cetakList(Node *head) {
 	}
 }
 
-void hapusbyID(Node *&head, int id){
+void hapusbyID(Node *&head, int id) {
 	if (head == nullptr){
 		cout << " Daftar kosong." << endl;
 		return;
@@ -161,7 +161,7 @@ void clearList(Node *&head) {
 	cout << "Semua pesanan berhasil dihapus." << endl;
 }
 
-void tampilmenu(){
+void tampilmenu() {
 	cout << "=== Sistem Laundry ===" << endl;
 	cout << "1. Tambah Pesanan di Awal" << endl;
 	cout << "2. Tambah Pesanan di Tengah" << endl;
@@ -268,6 +268,30 @@ int main() {
 			cin >> hapusNama;
 
 			hapusbyNama(head, hapusNama);
+		} else if (pilihanMenu == 7) {
+			int idUpdate;
+			string newStatus;
+
+			cout << "Masukkan ID pesanan yang ingin diupdate statusnya: ";
+			cin >> idUpdate;
+			cin.ignore();
+
+			cout << "Masukkan status baru (Sedang Antri/Sedang Diproses/Selesai): ";
+			getline(cin, newStatus);
+
+			updateStatusByID(head, idUpdate, newStatus);
+		} else if (pilihanMenu == 8) {
+			string namaUpdate;
+			string newStatus;
+
+			cout << "Masukkan Nama pesanan yang ingin diupdate statusnya: ";
+			cin >> namaUpdate;
+			cin.ignore();
+
+			cout << "Masukkan status baru (Sedang Antri/Sedang Diproses/Selesai): ";
+			getline(cin, newStatus);
+
+			updateStatusByNama(head, namaUpdate, newStatus);
 		}
 	} while (pilihanMenu != 9);
 
