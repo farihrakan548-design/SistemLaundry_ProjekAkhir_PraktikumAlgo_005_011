@@ -201,3 +201,16 @@ string tampiljenislayanan(){
 			}
 	
 }
+
+int main(){
+	Node *head = nullptr;
+
+	int pilihanMenu;
+	do {
+		tampilmenu();
+		cin >> pilihanMenu;
+
+	} while (pilihanMenu != 9);
+
+	return 0;
+}
