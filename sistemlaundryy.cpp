@@ -161,6 +161,20 @@ void clearList(Node *&head) {
 	cout << "Semua pesanan berhasil dihapus." << endl;
 }
 
+void tampilmenu(){
+	cout << "=== Sistem Laundry ===" << endl;
+	cout << "1. Tambah Pesanan di Awal" << endl;
+	cout << "2. Tambah Pesanan di Tengah" << endl;
+	cout << "3. Tambah Pesanan di Akhir" << endl;
+	cout << "4. Cetak Semua Pesanan" << endl;
+	cout << "5. Hapus Pesanan by ID" << endl;
+	cout << "6. Update Status Pesanan by ID" << endl;
+	cout << "7. Cari Pesanan by ID" << endl;
+	cout << "8. Clear Semua Pesanan" << endl;
+	cout << "9. Keluar" << endl;
+	cout << "Pilih menu: ";
+}
+
 string tampiljenislayanan(){
 	int pilihan;
 	string jenisLayanan;
