@@ -209,8 +209,10 @@ int main(){
 	do {
 		tampilmenu();
 		cin >> pilihanMenu;
-
+		cin.ignore();
 	} while (pilihanMenu != 9);
 
 	return 0;
+
+
 }
