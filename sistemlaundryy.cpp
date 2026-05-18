@@ -127,3 +127,16 @@ void hapusbyID(Node *&head, int id){
 	cout << "Pesanan dengan ID " << id << "atas nama " << toDelete->namaPelanggan << " berhasil dihapus." << endl;
 	delete toDelete;
 }
+
+void updateStatus(Node *head, int id, string newStatus) {
+	Node *current = head;
+	while (current != nullptr) {
+		if (current->id == id) {
+			current->status = newStatus;
+			cout << "Status pesanan dengan ID " << id << " berhasil diperbarui menjadi: " << newStatus << endl;
+			return;
+		}
+		current = current->next;
+	}
+	cout << "Pesanan dengan ID " << id << " tidak ditemukan." << endl;
+}
