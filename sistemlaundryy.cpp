@@ -160,3 +160,30 @@ void clearList(Node *&head) {
 	}
 	cout << "Semua pesanan berhasil dihapus." << endl;
 }
+
+string tampiljenislayanan(){
+	int pilihan;
+	string jenisLayanan;
+	cout << "=== Jenis Layanan Laundry ===" << endl;
+	cout << "1. Cuci Kering (Rp 5000/Kg)" << endl;
+	cout << "2. Cuci Setrika (Rp 8000/Kg)" << endl;
+	cout << "3. Setrika Saja (Rp 4000/Kg)" << endl;
+	cout << "Pilih jenis layanan: ";
+	cin >> pilihan;
+			cin.ignore(); // Bersihkan newline
+			if (pilihan < 1 || pilihan > 3) {
+				cout << "Pilihan tidak valid. Program akan keluar." << endl;
+				return "";
+			} else {
+				string jenisLayanan;
+				if (pilihan == 1) {
+					jenisLayanan = "Cuci Kering";
+				} else if (pilihan == 2) {
+					jenisLayanan = "Cuci Setrika";
+				} else {
+					jenisLayanan = "Setrika Saja";
+				}
+				return jenisLayanan;
+			}
+	
+}
