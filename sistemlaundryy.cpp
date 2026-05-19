@@ -292,7 +292,34 @@ int main() {
 			getline(cin, newStatus);
 
 			updateStatusByNama(head, namaUpdate, newStatus);
+		} else if (pilihanMenu == 9) {
+			int idCari;
+
+			cout << "Masukkan ID pesanan yang ingin dicari: ";
+			cin >> idCari;
+
+			Node *foundNode = caribyID(head, idCari);
+
+			if (foundNode != nullptr) {
+				cetakNode(foundNode);
+			} else {
+				cout << "Pesanan dengan ID " << idCari << " tidak ditemukan." << endl;
+			}
+		} else if (pilihanMenu == 10) {
+			string cariNama;
+
+			cout << "Masukkan nama pesanan yang ingin dicari: ";
+			cin >> cariNama;
+
+			Node *foundNode = caribyNama(head, cariNama);
+
+			if (foundNode != nullptr) {
+				cetakNode(foundNode);
+			} else {
+				cout << "Pesanan dengan ID " << cariNama << " tidak ditemukan." << endl;
+			}
 		}
+
 	} while (pilihanMenu != 9);
 
 	return 0;
