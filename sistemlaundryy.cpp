@@ -203,8 +203,8 @@ string tampiljenislayanan() {
 
 int main() {
 	Node *head = nullptr;
+	int pilihanMenu = 0;
 
-	int pilihanMenu;
 	do {
 		tampilmenu();
 		cin >> pilihanMenu;
@@ -222,8 +222,8 @@ int main() {
 			cin.ignore();
 
 			string jenisLayanan = tampiljenislayanan();
-
 			insertDiawal(head, nama, jenisLayanan, berat);
+
 		} else if (pilihanMenu == 2) {
 			string nama;
 			float berat;
@@ -236,8 +236,8 @@ int main() {
 			cin.ignore();
 
 			string jenisLayanan = tampiljenislayanan();
-
 			insertDiTengah(head, nama, jenisLayanan, berat);
+
 		} else if (pilihanMenu == 3) {
 			string nama;
 			float berat;
@@ -250,25 +250,18 @@ int main() {
 			cin.ignore();
 
 			string jenisLayanan = tampiljenislayanan();
-
 			insertDiAkhir(head, nama, jenisLayanan, berat);
+
 		} else if (pilihanMenu == 4) {
 			cetakList(head);
+
 		} else if (pilihanMenu == 5) {
 			int idHapus;
-
 			cout << "Masukkan ID pesanan yang ingin dihapus: ";
 			cin >> idHapus;
-
 			hapusbyID(head, idHapus);
+
 		} else if (pilihanMenu == 6) {
-			string hapusNama;
-
-			cout << "Masukkan Nama pesanan yang ingin dihapus: ";
-			cin >> hapusNama;
-
-			hapusbyNama(head, hapusNama);
-		} else if (pilihanMenu == 7) {
 			int idUpdate;
 			string newStatus;
 
@@ -279,48 +272,33 @@ int main() {
 			cout << "Masukkan status baru (Sedang Antri/Sedang Diproses/Selesai): ";
 			getline(cin, newStatus);
 
-			updateStatusByID(head, idUpdate, newStatus);
-		} else if (pilihanMenu == 8) {
-			string namaUpdate;
-			string newStatus;
+			updateStatus(head, idUpdate, newStatus);
 
-			cout << "Masukkan Nama pesanan yang ingin diupdate statusnya: ";
-			cin >> namaUpdate;
-			cin.ignore();
-
-			cout << "Masukkan status baru (Sedang Antri/Sedang Diproses/Selesai): ";
-			getline(cin, newStatus);
-
-			updateStatusByNama(head, namaUpdate, newStatus);
-		} else if (pilihanMenu == 9) {
+		} else if (pilihanMenu == 7) {
 			int idCari;
-
 			cout << "Masukkan ID pesanan yang ingin dicari: ";
 			cin >> idCari;
 
 			Node *foundNode = caribyID(head, idCari);
-
 			if (foundNode != nullptr) {
 				cetakNode(foundNode);
 			} else {
 				cout << "Pesanan dengan ID " << idCari << " tidak ditemukan." << endl;
 			}
-		} else if (pilihanMenu == 10) {
-			string cariNama;
 
-			cout << "Masukkan nama pesanan yang ingin dicari: ";
-			cin >> cariNama;
+		} else if (pilihanMenu == 8) {
+			clearList(head);
 
-			Node *foundNode = caribyNama(head, cariNama);
+		} else if (pilihanMenu == 9) {
+			cout << "Terima kasih telah menggunakan sistem laundry. Program akan keluar." << endl;
+			clearList(head);
+			break;
 
-			if (foundNode != nullptr) {
-				cetakNode(foundNode);
-			} else {
-				cout << "Pesanan dengan ID " << cariNama << " tidak ditemukan." << endl;
-			}
+		} else {
+			cout << "Pilihan tidak valid. Silakan coba lagi." << endl;
 		}
 
-	} while (pilihanMenu != 9);
+	} while (true);
 
 	return 0;
 }
