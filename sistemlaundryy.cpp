@@ -80,12 +80,16 @@ void cetakHarga(float harga) {
 
 //cetak satu node
 void cetakNode(Node *node) {
+	cout << "-------------------------" << endl;
+	cout << "      Detail Pesanan     " << endl;
+	cout << "-------------------------" << endl;
 	cout << "ID: " << node->id << endl;
 	cout << "Nama Pelanggan: " << node->namaPelanggan << endl;
 	cout << "Jenis Layanan: " << node->jenisLayanan << endl;
 	cout << "Berat (Kg): " << node->beratKg << endl;
 	cetakHarga(node->totalHarga);
 	cout << "Status: " << node->status << endl;
+	cout << "-------------------------" << endl;
 }
 
 //cetak seluruh list
@@ -162,7 +166,9 @@ void clearList(Node *&head) {
 }
 
 void tampilmenu() {
-	cout << "=== Sistem Laundry ===" << endl;
+	cout << "==============================" << endl;
+	cout << "     	Sistem Laundry       " << endl;
+	cout << "==============================" << endl;
 	cout << "1. Tambah Pesanan di Awal" << endl;
 	cout << "2. Tambah Pesanan di Tengah" << endl;
 	cout << "3. Tambah Pesanan di Akhir" << endl;
@@ -172,16 +178,19 @@ void tampilmenu() {
 	cout << "7. Cari Pesanan by ID" << endl;
 	cout << "8. Clear Semua Pesanan" << endl;
 	cout << "9. Keluar" << endl;
+	cout << "==============================" << endl;
 	cout << "Pilih menu: ";
 }
 
 string tampiljenislayanan() {
 	int pilihan;
 	string jenisLayanan;
+
 	cout << "=== Jenis Layanan Laundry ===" << endl;
 	cout << "1. Cuci Kering (Rp 5000/Kg)" << endl;
 	cout << "2. Cuci Setrika (Rp 8000/Kg)" << endl;
 	cout << "3. Setrika Saja (Rp 4000/Kg)" << endl;
+	cout << "==============================" << endl;
 	cout << "Pilih jenis layanan: ";
 	cin >> pilihan;
 	cin.ignore(); // Bersihkan newline
@@ -214,6 +223,7 @@ int main() {
 			string nama;
 			float berat;
 
+			cout << "==============================" << endl;
 			cout << "Masukkan nama pelanggan: ";
 			getline(cin, nama);
 
@@ -228,6 +238,7 @@ int main() {
 			string nama;
 			float berat;
 
+			cout << "==============================" << endl;
 			cout << "Masukkan nama pelanggan: ";
 			getline(cin, nama);
 
@@ -242,6 +253,7 @@ int main() {
 			string nama;
 			float berat;
 
+			cout << "==============================" << endl;
 			cout << "Masukkan nama pelanggan: ";
 			getline(cin, nama);
 
