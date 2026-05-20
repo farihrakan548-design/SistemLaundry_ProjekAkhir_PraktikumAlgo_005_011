@@ -156,6 +156,59 @@ Node *caribyID(Node *head, int id) {
 	return nullptr;
 }
 
+int hitungJumlahPesanan(Node *head) {
+	int jumlah = 0;
+
+	while (head != nullptr) {
+		jumlah++;
+		head = head->next;
+	}
+
+	return jumlah;
+}
+
+float hitungTotalPendapatan(Node *head) {
+	float total = 0;
+
+	while (head != nullptr) {
+		total += head->totalHarga;
+		head = head->next;
+	}
+
+	return total;
+}
+
+int hitungPesananSelesai(Node *head) {
+	int jumlah = 0;
+
+	while (head != nullptr) {
+		if (head->status == "Selesai") {
+			jumlah++;
+		}
+
+		head = head->next;
+	}
+
+	return jumlah;
+}
+
+void tampilStatistik(Node *head) {
+	cout << "==============================" << endl;
+	cout << "      Statistik Laundry       " << endl;
+	cout << "==============================" << endl;
+
+	cout << "Total Pesanan       : "
+		 << hitungJumlahPesanan(head) << endl;
+
+	cout << "Pesanan Selesai     : "
+		 << hitungPesananSelesai(head) << endl;
+
+	cout << "Total Pendapatan    : Rp "
+		 << hitungTotalPendapatan(head) << endl;
+
+	cout << "==============================" << endl;
+}
+
 void clearList(Node *&head) {
 	while (head != nullptr) {
 		Node *toDelete = head;
@@ -177,7 +230,8 @@ void tampilmenu() {
 	cout << "6. Update Status Pesanan by ID" << endl;
 	cout << "7. Cari Pesanan by ID" << endl;
 	cout << "8. Clear Semua Pesanan" << endl;
-	cout << "9. Keluar" << endl;
+	cout << "9. Statistik Laundry" << endl;
+	cout << "10. Keluar" << endl;
 	cout << "==============================" << endl;
 	cout << "Pilih menu: ";
 }
@@ -302,6 +356,10 @@ int main() {
 			clearList(head);
 
 		} else if (pilihanMenu == 9) {
+			tampilStatistik(head);
+
+		} else if (pilihanMenu == 10) {
+
 			cout << "Terima kasih telah menggunakan sistem laundry. Program akan keluar." << endl;
 			clearList(head);
 			break;
