@@ -235,6 +235,25 @@ void nukerData (Node *a, Node *b) {
 	b->status = tempStatus;
 }
 
+void sortById(Node *head) {
+	if (head == nullptr) {
+		return;
+	}
+	Node *current = head;
+	while (current != nullptr) {
+		Node *minNode = current;
+		Node *nextNode = current->next;
+		while (nextNode != nullptr) {
+			if (nextNode->id < minNode->id) {
+				minNode = nextNode;
+			}
+			nextNode = nextNode->next;
+		}
+		nukerData(current, minNode);
+		current = current->next;
+	}
+}
+
 
 //clear list
 void clearList(Node *&head) {
