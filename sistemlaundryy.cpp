@@ -20,7 +20,6 @@ void garis() {
 
 bool kembaliMenu() {
 	char pilih;
-
 	cout << endl;
 	cout << "Kembali ke menu utama? (Y/N): ";
 	cin >> pilih;
@@ -50,6 +49,7 @@ Node *buatNode(string nama, string layanan, float berat) {
 	}
 
 	newNode->totalHarga = berat * hargaPerKg;
+
 	return newNode;
 }
 
@@ -427,17 +427,54 @@ void clearList(Node *&head) {
 		head = head->next;
 		delete toDelete;
 	}
+}
 
+void hapusSemuaPesanan(Node *&head) {
+	clearList(head);
 	cout << endl;
 	cout << "Semua pesanan berhasil dihapus." << endl;
 }
 
+void tambahNodeDariFile(Node *&head, int id, string nama, string layanan, float berat, float harga, string status) {
+	Node *newNode = new Node;
+
+	newNode->id = id;
+	newNode->namaPelanggan = nama;
+	newNode->jenisLayanan = layanan;
+	newNode->beratKg = berat;
+	newNode->totalHarga = harga;
+	newNode->status = status;
+	newNode->next = nullptr;
+
+	if (id >= idPelanggan) {
+		idPelanggan = id + 1;
+	}
+
+	if (head == nullptr) {
+		head = newNode;
+	} else {
+		Node *current = head;
+
+		while (current->next != nullptr) {
+			current = current->next;
+		}
+
+		current->next = newNode;
+	}
+}
+
 void simpanKeFile(Node *head) {
-	ofstream file("data_laundry.txt");
+	string namaFile;
+
+	cout << endl;
+	cout << "Masukkan nama file untuk menyimpan data: ";
+	getline(cin, namaFile);
+
+	ofstream file(namaFile.c_str());
 
 	if (!file.is_open()) {
 		cout << endl;
-		cout << "File gagal dibuka." << endl;
+		cout << "File gagal dibuat." << endl;
 		return;
 	}
 
@@ -457,21 +494,26 @@ void simpanKeFile(Node *head) {
 	file.close();
 
 	cout << endl;
-	cout << "Data laundry berhasil disimpan ke file data_laundry.txt." << endl;
+	cout << "Data berhasil disimpan ke file: " << namaFile << endl;
 }
 
-void bacaFile() {
-	ifstream file("data_laundry.txt");
+void bacaFile(Node *&head) {
+	string namaFile;
+
+	cout << endl;
+	cout << "Masukkan nama file yang ingin dibaca: ";
+	getline(cin, namaFile);
+
+	ifstream file(namaFile.c_str());
 
 	if (!file.is_open()) {
 		cout << endl;
-		cout << "File data_laundry.txt tidak ditemukan." << endl;
+		cout << "File tidak ditemukan." << endl;
 		return;
 	}
 
-	garis();
-	cout << "          DATA DARI FILE" << endl;
-	garis();
+	clearList(head);
+	idPelanggan = 1;
 
 	int id;
 	string nama;
@@ -492,16 +534,15 @@ void bacaFile() {
 
 		getline(file, status);
 
-		cout << "ID Pesanan      : " << id << endl;
-		cout << "Nama Pelanggan  : " << nama << endl;
-		cout << "Jenis Layanan   : " << layanan << endl;
-		cout << "Berat Cucian    : " << berat << " Kg" << endl;
-		cout << "Total Harga     : Rp " << harga << endl;
-		cout << "Status Laundry  : " << status << endl;
-		garis();
+		tambahNodeDariFile(head, id, nama, layanan, berat, harga, status);
 	}
 
 	file.close();
+
+	cout << endl;
+	cout << "Data berhasil dibaca dari file: " << namaFile << endl;
+
+	cetakList(head);
 }
 
 void tampilmenu() {
@@ -701,10 +742,10 @@ int main() {
 			simpanKeFile(head);
 
 		} else if (pilihanMenu == 9) {
-			bacaFile();
+			bacaFile(head);
 
 		} else if (pilihanMenu == 10) {
-			clearList(head);
+			hapusSemuaPesanan(head);
 
 		} else if (pilihanMenu == 11) {
 			cout << endl;
