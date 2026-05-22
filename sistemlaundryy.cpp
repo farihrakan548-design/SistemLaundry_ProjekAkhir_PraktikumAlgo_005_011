@@ -355,7 +355,8 @@ void tampilmenu() {
 	cout << "7. Cari Pesanan by ID" << endl;
 	cout << "8. Clear Semua Pesanan" << endl;
 	cout << "9. Statistik Laundry" << endl;
-	cout << "10. Keluar" << endl;
+	cout << "10. Sorting Pesanan" << endl;
+	cout << "11. Keluar" << endl;
 	cout << "==============================" << endl;
 	cout << "Pilih menu: ";
 }
@@ -484,10 +485,40 @@ int main() {
 
 		} else if (pilihanMenu == 10) {
 
+			int pilihanSort;
+			cout << "====== Sorting Pesanan ======" << endl;
+			cout << "1. Sort by ID" << endl;
+			cout << "2. Sort by Nama Pelanggan" << endl;
+			cout << "3. Sort by Status" << endl;
+			cout << "4. Sort by Total Harga" << endl;
+			cout << "5. Sort by Berat (Kg)" << endl;
+			cout << "==============================" << endl;
+			cout << "Pilih kriteria sorting: ";
+			cin >> pilihanSort;
+
+			if (pilihanSort == 1) {
+				sortById(head);
+				cout << "Pesanan berhasil diurutkan berdasarkan ID." << endl;
+			} else if (pilihanSort == 2) {
+				sortByNama(head);
+				cout << "Pesanan berhasil diurutkan berdasarkan Nama Pelanggan." << endl;
+			} else if (pilihanSort == 3) {
+				sortByStatus(head);
+				cout << "Pesanan berhasil diurutkan berdasarkan Status." << endl;
+			} else if (pilihanSort == 4) {
+				sortByHarga(head);
+				cout << "Pesanan berhasil diurutkan berdasarkan Total Harga." << endl;
+			} else if (pilihanSort == 5) {
+				sortByBerat(head);
+				cout << "Pesanan berhasil diurutkan berdasarkan Berat (Kg)." << endl;
+			} else {
+				cout << "Pilihan sorting tidak ada." << endl;
+			}
+
+		} else if (pilihanMenu == 11) {
 			cout << "Terima kasih telah menggunakan sistem laundry. Program akan keluar." << endl;
 			clearList(head);
 			break;
-
 		} else {
 			cout << "Pilihan tidak valid. Silakan coba lagi." << endl;
 		}
