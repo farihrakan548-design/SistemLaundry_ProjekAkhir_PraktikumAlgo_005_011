@@ -254,6 +254,25 @@ void sortById(Node *head) {
 	}
 }
 
+void sortByNama(Node *head) {
+	if (head == nullptr) {
+		return;
+	}
+	Node *current = head;
+	while (current != nullptr) {
+		Node *minNode = current;
+		Node *nextNode = current->next;
+		while (nextNode != nullptr) {
+			if (nextNode->namaPelanggan < minNode->namaPelanggan) {
+				minNode = nextNode;
+			}
+			nextNode = nextNode->next;
+		}
+		nukerData(current, minNode);
+		current = current->next;
+	}
+}
+
 
 //clear list
 void clearList(Node *&head) {
