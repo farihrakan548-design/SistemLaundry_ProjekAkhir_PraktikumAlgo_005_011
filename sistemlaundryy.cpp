@@ -214,6 +214,28 @@ void tampilStatistik(Node *head) {
 	cout << "==============================" << endl;
 }
 
+void nukerData (Node *a, Node *b) {
+	int tempId = a->id;
+	a->id = b->id;
+	b->id = tempId;
+	string tempNama = a->namaPelanggan;
+	a->namaPelanggan = b->namaPelanggan;
+	b->namaPelanggan = tempNama;
+	string tempLayanan = a->jenisLayanan;
+	a->jenisLayanan = b->jenisLayanan;
+	b->jenisLayanan = tempLayanan;
+	float tempBerat = a->beratKg;
+	a->beratKg = b->beratKg;
+	b->beratKg = tempBerat;
+	float tempHarga = a->totalHarga;
+	a->totalHarga = b->totalHarga;
+	b->totalHarga = tempHarga;
+	string tempStatus = a->status;
+	a->status = b->status;
+	b->status = tempStatus;
+}
+
+
 //clear list
 void clearList(Node *&head) {
 	while (head != nullptr) {
