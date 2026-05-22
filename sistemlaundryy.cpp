@@ -2,6 +2,7 @@
 #include <fstream>
 using namespace std;
 
+// Struktur data untuk menyimpan informasi pesanan laundry
 struct Node {
 	int id;
 	string namaPelanggan;
@@ -18,6 +19,7 @@ void garis() {
 	cout << "========================================" << endl;
 }
 
+// Fungsi untuk menanyakan apakah pengguna ingin kembali ke menu utama
 bool kembaliMenu() {
 	char pilih;
 	cout << endl;
@@ -28,6 +30,7 @@ bool kembaliMenu() {
 	return pilih == 'Y' || pilih == 'y';
 }
 
+// Fungsi untuk membuat node baru dengan data pesanan laundry
 Node *buatNode(string nama, string layanan, float berat) {
 	Node *newNode = new Node;
 
@@ -53,6 +56,7 @@ Node *buatNode(string nama, string layanan, float berat) {
 	return newNode;
 }
 
+// Fungsi untuk mencetak detail pesanan laundry
 void cetakNode(Node *node) {
 	garis();
 	cout << "            DETAIL PESANAN" << endl;
@@ -66,6 +70,7 @@ void cetakNode(Node *node) {
 	garis();
 }
 
+// Fungsi untuk mencetak semua pesanan laundry dalam bentuk daftar
 void cetakList(Node *head) {
 	if (head == nullptr) {
 		cout << endl;
@@ -81,6 +86,7 @@ void cetakList(Node *head) {
 	}
 }
 
+// Fungsi untuk menampilkan pilihan jenis layanan laundry
 string tampiljenislayanan() {
 	int pilihan;
 
@@ -107,6 +113,7 @@ string tampiljenislayanan() {
 	return "";
 }
 
+// Fungsi untuk menginput data pesanan laundry dari pengguna
 void inputDataPesanan(string &nama, float &berat, string &jenisLayanan) {
 	garis();
 	cout << "            INPUT PESANAN" << endl;
@@ -122,6 +129,7 @@ void inputDataPesanan(string &nama, float &berat, string &jenisLayanan) {
 	jenisLayanan = tampiljenislayanan();
 }
 
+// Fungsi untuk menambahkan pesanan laundry baru di awal
 void insertDiawal(Node *&head, string nama, string layanan, float berat) {
 	Node *newNode = buatNode(nama, layanan, berat);
 
@@ -133,6 +141,7 @@ void insertDiawal(Node *&head, string nama, string layanan, float berat) {
 	cout << "ID Pesanan : " << newNode->id << endl;
 }
 
+// Fungsi untuk menambahkan pesanan laundry baru di tengah
 void insertDiTengah(Node *&head, string nama, string layanan, float berat) {
 	Node *newNode = buatNode(nama, layanan, berat);
 
@@ -153,6 +162,7 @@ void insertDiTengah(Node *&head, string nama, string layanan, float berat) {
 	cout << "ID Pesanan : " << newNode->id << endl;
 }
 
+// Fungsi untuk menambahkan pesanan laundry baru di akhir
 void insertDiAkhir(Node *&head, string nama, string layanan, float berat) {
 	Node *newNode = buatNode(nama, layanan, berat);
 
@@ -173,6 +183,7 @@ void insertDiAkhir(Node *&head, string nama, string layanan, float berat) {
 	cout << "ID Pesanan : " << newNode->id << endl;
 }
 
+// Fungsi untuk menghapus pesanan laundry berdasarkan ID
 void hapusbyID(Node *&head, int id) {
 	if (head == nullptr) {
 		cout << endl;
@@ -214,6 +225,7 @@ void hapusbyID(Node *&head, int id) {
 	delete toDelete;
 }
 
+// Fungsi untuk memperbarui status pesanan laundry berdasarkan ID
 void updateStatus(Node *head, int id, string newStatus) {
 	Node *current = head;
 
@@ -235,6 +247,7 @@ void updateStatus(Node *head, int id, string newStatus) {
 	cout << "Pesanan tidak ditemukan." << endl;
 }
 
+// Fungsi untuk mencari pesanan laundry berdasarkan ID
 Node *caribyID(Node *head, int id) {
 	Node *current = head;
 
@@ -285,6 +298,7 @@ int hitungPesananSelesai(Node *head) {
 	return jumlah;
 }
 
+// Fungsi untuk menampilkan statistik laundry seperti total pesanan, pesanan selesai, dan total pendapatan
 void tampilStatistik(Node *head) {
 	garis();
 	cout << "          STATISTIK LAUNDRY" << endl;
@@ -320,7 +334,7 @@ void nukerData(Node *a, Node *b) {
 	a->status = b->status;
 	b->status = tempStatus;
 }
-
+// Fungsi untuk mengurutkan pesanan laundry berdasarkan ID
 void sortById(Node *head) {
 	Node *current = head;
 
@@ -340,7 +354,7 @@ void sortById(Node *head) {
 		current = current->next;
 	}
 }
-
+// Fungsi untuk mengurutkan pesanan laundry berdasarkan nama pelanggan
 void sortByNama(Node *head) {
 	Node *current = head;
 
@@ -360,7 +374,7 @@ void sortByNama(Node *head) {
 		current = current->next;
 	}
 }
-
+// Fungsi untuk mengurutkan pesanan laundry berdasarkan status
 void sortByStatus(Node *head) {
 	Node *current = head;
 
@@ -380,7 +394,7 @@ void sortByStatus(Node *head) {
 		current = current->next;
 	}
 }
-
+// Fungsi untuk mengurutkan pesanan laundry berdasarkan harga
 void sortByHarga(Node *head) {
 	Node *current = head;
 
@@ -400,7 +414,7 @@ void sortByHarga(Node *head) {
 		current = current->next;
 	}
 }
-
+// Fungsi untuk mengurutkan pesanan laundry berdasarkan berat
 void sortByBerat(Node *head) {
 	Node *current = head;
 
@@ -420,7 +434,7 @@ void sortByBerat(Node *head) {
 		current = current->next;
 	}
 }
-
+// Fungsi untuk menghapus semua pesanan laundry dari daftar
 void clearList(Node *&head) {
 	while (head != nullptr) {
 		Node *toDelete = head;
@@ -435,6 +449,7 @@ void hapusSemuaPesanan(Node *&head) {
 	cout << "Semua pesanan berhasil dihapus." << endl;
 }
 
+// Fungsi untuk menambahkan node pesanan laundry dari data yang dibaca dari file
 void tambahNodeDariFile(Node *&head, int id, string nama, string layanan, float berat, float harga, string status) {
 	Node *newNode = new Node;
 
@@ -462,7 +477,7 @@ void tambahNodeDariFile(Node *&head, int id, string nama, string layanan, float 
 		current->next = newNode;
 	}
 }
-
+// Fungsi untuk menyimpan data pesanan laundry ke file
 void simpanKeFile(Node *head) {
 	string namaFile;
 
@@ -496,7 +511,7 @@ void simpanKeFile(Node *head) {
 	cout << endl;
 	cout << "Data berhasil disimpan ke file: " << namaFile << endl;
 }
-
+// Fungsi untuk membaca data pesanan laundry dari file
 void bacaFile(Node *&head) {
 	string namaFile;
 
@@ -544,7 +559,7 @@ void bacaFile(Node *&head) {
 
 	cetakList(head);
 }
-
+// Fungsi untuk menampilkan menu utama sistem laundry
 void tampilmenu() {
 	garis();
 	cout << "             SISTEM LAUNDRY" << endl;
@@ -563,7 +578,7 @@ void tampilmenu() {
 	garis();
 	cout << "Pilih menu: ";
 }
-
+// Fungsi utama untuk menjalankan program sistem laundry
 int main() {
 	Node *head = nullptr;
 
