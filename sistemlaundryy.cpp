@@ -106,6 +106,7 @@ void cetakList(Node *head) {
 	}
 }
 
+//hapus pelanggan by ID
 void hapusbyID(Node *&head, int id) {
 	if (head == nullptr){
 		cout << " Daftar kosong." << endl;
@@ -132,6 +133,7 @@ void hapusbyID(Node *&head, int id) {
 	delete toDelete;
 }
 
+//update status laundry
 void updateStatus(Node *head, int id, string newStatus) {
 	Node *current = head;
 	while (current != nullptr) {
@@ -145,6 +147,7 @@ void updateStatus(Node *head, int id, string newStatus) {
 	cout << "Pesanan dengan ID " << id << " tidak ditemukan." << endl;
 }
 
+//cari pelanggan by ID
 Node *caribyID(Node *head, int id) {
 	Node *current = head;
 	while (current != nullptr) {
@@ -167,6 +170,7 @@ int hitungJumlahPesanan(Node *head) {
 	return jumlah;
 }
 
+//total pendapatan
 float hitungTotalPendapatan(Node *head) {
 	float total = 0;
 
@@ -192,6 +196,7 @@ int hitungPesananSelesai(Node *head) {
 	return jumlah;
 }
 
+//statistik laundry
 void tampilStatistik(Node *head) {
 	cout << "==============================" << endl;
 	cout << "      Statistik Laundry       " << endl;
@@ -209,6 +214,7 @@ void tampilStatistik(Node *head) {
 	cout << "==============================" << endl;
 }
 
+//clear list
 void clearList(Node *&head) {
 	while (head != nullptr) {
 		Node *toDelete = head;
@@ -218,6 +224,7 @@ void clearList(Node *&head) {
 	cout << "Semua pesanan berhasil dihapus." << endl;
 }
 
+//menampilkan menu
 void tampilmenu() {
 	cout << "==============================" << endl;
 	cout << "     	Sistem Laundry       " << endl;
