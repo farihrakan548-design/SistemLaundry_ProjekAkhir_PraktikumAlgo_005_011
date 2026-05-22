@@ -292,6 +292,25 @@ void sortByStatus(Node *head) {
 	}
 }
 
+void sortByHarga(Node *head) {
+	if (head == nullptr) {
+		return;
+	}
+	Node *current = head;
+	while (current != nullptr) {
+		Node *minNode = current;
+		Node *nextNode = current->next;
+		while (nextNode != nullptr) {
+			if (nextNode->totalHarga < minNode->totalHarga) {
+				minNode = nextNode;
+			}
+			nextNode = nextNode->next;
+		}
+		nukerData(current, minNode);
+		current = current->next;
+	}
+}
+
 
 
 //clear list
