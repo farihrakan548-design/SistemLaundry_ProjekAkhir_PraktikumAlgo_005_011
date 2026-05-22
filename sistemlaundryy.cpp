@@ -13,9 +13,28 @@ struct Node {
 
 int idPelanggan = 1;
 
-// Buat Node Baru
+void garis() {
+	cout << "========================================" << endl;
+}
+
+bool kembaliMenu() {
+	char pilih;
+
+	cout << endl;
+	cout << "Kembali ke menu utama? (Y/N): ";
+	cin >> pilih;
+	cin.ignore();
+
+	if (pilih == 'Y' || pilih == 'y') {
+		return true;
+	}
+
+	return false;
+}
+
 Node *buatNode(string nama, string layanan, float berat) {
 	Node *newNode = new Node;
+
 	newNode->id = idPelanggan++;
 	newNode->namaPelanggan = nama;
 	newNode->jenisLayanan = layanan;
@@ -24,6 +43,7 @@ Node *buatNode(string nama, string layanan, float berat) {
 	newNode->next = nullptr;
 
 	float hargaPerKg = 0;
+
 	if (layanan == "Cuci Kering") {
 		hargaPerKg = 5000;
 	} else if (layanan == "Cuci Setrika") {
@@ -31,131 +51,223 @@ Node *buatNode(string nama, string layanan, float berat) {
 	} else if (layanan == "Setrika Saja") {
 		hargaPerKg = 4000;
 	}
+
 	newNode->totalHarga = berat * hargaPerKg;
+
 	return newNode;
 }
 
-//insert diawal linkedlist
-void insertDiawal(Node *&head, string nama, string layanan, float berat) {
-	Node *newNode = buatNode(nama, layanan, berat);
-	newNode->next = head;
-	head = newNode;
-	cout << "Pesanan Pertama berhasil ditambahkan dengan ID: " << newNode->id << endl;
+void cetakHarga(float harga) {
+	cout << "Total Harga     : Rp " << harga << endl;
 }
 
-//insert di tengah linkedlist
+void cetakNode(Node *node) {
+	garis();
+	cout << "            DETAIL PESANAN" << endl;
+	garis();
+
+	cout << "ID Pesanan      : " << node->id << endl;
+	cout << "Nama Pelanggan  : " << node->namaPelanggan << endl;
+	cout << "Jenis Layanan   : " << node->jenisLayanan << endl;
+	cout << "Berat Cucian    : " << node->beratKg << " Kg" << endl;
+
+	cetakHarga(node->totalHarga);
+
+	cout << "Status Laundry  : " << node->status << endl;
+
+	garis();
+}
+
+void cetakList(Node *head) {
+	if (head == nullptr) {
+		cout << endl;
+		cout << "Belum ada pesanan laundry." << endl;
+		return;
+	}
+
+	Node *current = head;
+
+	while (current != nullptr) {
+		cetakNode(current);
+		current = current->next;
+	}
+}
+
+string tampiljenislayanan() {
+	int pilihan;
+
+	garis();
+	cout << "             JENIS LAYANAN" << endl;
+	garis();
+
+	cout << "1. Cuci Kering   - Rp 5000/Kg" << endl;
+	cout << "2. Cuci Setrika  - Rp 8000/Kg" << endl;
+	cout << "3. Setrika Saja  - Rp 4000/Kg" << endl;
+
+	garis();
+	cout << "Pilih layanan: ";
+	cin >> pilihan;
+	cin.ignore();
+
+	if (pilihan == 1) {
+		return "Cuci Kering";
+	} else if (pilihan == 2) {
+		return "Cuci Setrika";
+	} else if (pilihan == 3) {
+		return "Setrika Saja";
+	}
+
+	return "";
+}
+
+void inputDataPesanan(string &nama, float &berat, string &jenisLayanan) {
+	garis();
+	cout << "            INPUT PESANAN" << endl;
+	garis();
+
+	cout << "Masukkan nama pelanggan : ";
+	getline(cin, nama);
+
+	cout << "Masukkan berat cucian   : ";
+	cin >> berat;
+	cin.ignore();
+
+	jenisLayanan = tampiljenislayanan();
+}
+
+void insertDiawal(Node *&head, string nama, string layanan, float berat) {
+	Node *newNode = buatNode(nama, layanan, berat);
+
+	newNode->next = head;
+	head = newNode;
+
+	cout << endl;
+	cout << "Pesanan berhasil ditambahkan di awal." << endl;
+	cout << "ID Pesanan : " << newNode->id << endl;
+}
+
 void insertDiTengah(Node *&head, string nama, string layanan, float berat) {
 	Node *newNode = buatNode(nama, layanan, berat);
+
 	if (head == nullptr) {
 		head = newNode;
-		return;
 	} else {
 		Node *current = head;
+
 		while (current->next != nullptr) {
 			current = current->next;
 		}
+
 		current->next = newNode;
-		cout << "Pesanan Tengah berhasil ditambahkan dengan ID: " << newNode->id << endl;
 	}
+
+	cout << endl;
+	cout << "Pesanan berhasil ditambahkan di tengah." << endl;
+	cout << "ID Pesanan : " << newNode->id << endl;
 }
 
-//insert di akhir linkedlist
 void insertDiAkhir(Node *&head, string nama, string layanan, float berat) {
 	Node *newNode = buatNode(nama, layanan, berat);
+
 	if (head == nullptr) {
 		head = newNode;
-		return;
+	} else {
+		Node *current = head;
+
+		while (current->next != nullptr) {
+			current = current->next;
+		}
+
+		current->next = newNode;
 	}
-	Node *current = head;
-	while (current->next != nullptr) {
-		current = current->next;
-	}
-	current->next = newNode;
-	cout << "Pesanan Terakhir berhasil ditambahkan dengan ID: " << newNode->id << endl;
+
+	cout << endl;
+	cout << "Pesanan berhasil ditambahkan di akhir." << endl;
+	cout << "ID Pesanan : " << newNode->id << endl;
 }
 
-void cetakHarga(float harga) {
-	cout << "Total Harga: Rp " << harga << endl;
-}
-
-//cetak satu node
-void cetakNode(Node *node) {
-	cout << "-------------------------" << endl;
-	cout << "      Detail Pesanan     " << endl;
-	cout << "-------------------------" << endl;
-	cout << "ID: " << node->id << endl;
-	cout << "Nama Pelanggan: " << node->namaPelanggan << endl;
-	cout << "Jenis Layanan: " << node->jenisLayanan << endl;
-	cout << "Berat (Kg): " << node->beratKg << endl;
-	cetakHarga(node->totalHarga);
-	cout << "Status: " << node->status << endl;
-	cout << "-------------------------" << endl;
-}
-
-//cetak seluruh list
-void cetakList(Node *head) {
-	if (head == nullptr) {
-		cout << "Tidak ada pesanan." << endl;
-		return;
-	}
-	Node *current = head;
-	while (current != nullptr) {
-		cetakNode(current);
-		cout << "-------------------------" << endl;
-		current = current->next;
-	}
-}
-
-//hapus pelanggan by ID
 void hapusbyID(Node *&head, int id) {
-	if (head == nullptr){
-		cout << " Daftar kosong." << endl;
+	if (head == nullptr) {
+		cout << endl;
+		cout << "Daftar pesanan kosong." << endl;
 		return;
 	}
-	if (head->id == id){
+
+	if (head->id == id) {
 		Node *toDelete = head;
 		head = head->next;
-		cout << "Pesanan dengan ID " << id << "atas nama " << toDelete->namaPelanggan << " berhasil dihapus." << endl;
+
+		cout << endl;
+		cout << "Pesanan ID " << id
+			 << " atas nama "
+			 << toDelete->namaPelanggan
+			 << " berhasil dihapus." << endl;
+
 		delete toDelete;
 		return;
 	}
+
 	Node *current = head;
-	while (current->next != nullptr && current->next->id != id) {
+
+	while (current->next != nullptr &&
+		   current->next->id != id) {
 		current = current->next;
 	}
+
 	if (current->next == nullptr) {
-		cout << "Pesanan dengan ID " << id << " tidak ditemukan." << endl;
+		cout << endl;
+		cout << "Pesanan tidak ditemukan." << endl;
 		return;
 	}
+
 	Node *toDelete = current->next;
 	current->next = toDelete->next;
-	cout << "Pesanan dengan ID " << id << "atas nama " << toDelete->namaPelanggan << " berhasil dihapus." << endl;
+
+	cout << endl;
+	cout << "Pesanan ID " << id
+		 << " atas nama "
+		 << toDelete->namaPelanggan
+		 << " berhasil dihapus." << endl;
+
 	delete toDelete;
 }
 
-//update status laundry
 void updateStatus(Node *head, int id, string newStatus) {
 	Node *current = head;
+
 	while (current != nullptr) {
+
 		if (current->id == id) {
+
 			current->status = newStatus;
-			cout << "Status pesanan dengan ID " << id << " berhasil diperbarui menjadi: " << newStatus << endl;
+
+			cout << endl;
+			cout << "Status pesanan berhasil diperbarui." << endl;
+			cout << "ID Pesanan  : " << id << endl;
+			cout << "Status Baru : " << newStatus << endl;
+
 			return;
 		}
+
 		current = current->next;
 	}
-	cout << "Pesanan dengan ID " << id << " tidak ditemukan." << endl;
+
+	cout << endl;
+	cout << "Pesanan tidak ditemukan." << endl;
 }
 
-//cari pelanggan by ID
 Node *caribyID(Node *head, int id) {
 	Node *current = head;
+
 	while (current != nullptr) {
+
 		if (current->id == id) {
 			return current;
 		}
+
 		current = current->next;
 	}
+
 	return nullptr;
 }
 
@@ -170,7 +282,6 @@ int hitungJumlahPesanan(Node *head) {
 	return jumlah;
 }
 
-//total pendapatan
 float hitungTotalPendapatan(Node *head) {
 	float total = 0;
 
@@ -186,6 +297,7 @@ int hitungPesananSelesai(Node *head) {
 	int jumlah = 0;
 
 	while (head != nullptr) {
+
 		if (head->status == "Selesai") {
 			jumlah++;
 		}
@@ -196,334 +308,483 @@ int hitungPesananSelesai(Node *head) {
 	return jumlah;
 }
 
-//statistik laundry
 void tampilStatistik(Node *head) {
-	cout << "==============================" << endl;
-	cout << "      Statistik Laundry       " << endl;
-	cout << "==============================" << endl;
+	garis();
+	cout << "          STATISTIK LAUNDRY" << endl;
+	garis();
 
-	cout << "Total Pesanan       : "
+	cout << "Total Pesanan      : "
 		 << hitungJumlahPesanan(head) << endl;
 
-	cout << "Pesanan Selesai     : "
+	cout << "Pesanan Selesai    : "
 		 << hitungPesananSelesai(head) << endl;
 
-	cout << "Total Pendapatan    : Rp "
+	cout << "Total Pendapatan   : Rp "
 		 << hitungTotalPendapatan(head) << endl;
 
-	cout << "==============================" << endl;
+	garis();
 }
 
-void nukerData (Node *a, Node *b) {
+void nukerData(Node *a, Node *b) {
+
 	int tempId = a->id;
 	a->id = b->id;
 	b->id = tempId;
+
 	string tempNama = a->namaPelanggan;
 	a->namaPelanggan = b->namaPelanggan;
 	b->namaPelanggan = tempNama;
+
 	string tempLayanan = a->jenisLayanan;
 	a->jenisLayanan = b->jenisLayanan;
 	b->jenisLayanan = tempLayanan;
+
 	float tempBerat = a->beratKg;
 	a->beratKg = b->beratKg;
 	b->beratKg = tempBerat;
+
 	float tempHarga = a->totalHarga;
 	a->totalHarga = b->totalHarga;
 	b->totalHarga = tempHarga;
+
 	string tempStatus = a->status;
 	a->status = b->status;
 	b->status = tempStatus;
 }
 
 void sortById(Node *head) {
-	if (head == nullptr) {
-		return;
-	}
+
 	Node *current = head;
+
 	while (current != nullptr) {
+
 		Node *minNode = current;
 		Node *nextNode = current->next;
+
 		while (nextNode != nullptr) {
+
 			if (nextNode->id < minNode->id) {
 				minNode = nextNode;
 			}
+
 			nextNode = nextNode->next;
 		}
+
 		nukerData(current, minNode);
+
 		current = current->next;
 	}
 }
 
 void sortByNama(Node *head) {
-	if (head == nullptr) {
-		return;
-	}
+
 	Node *current = head;
+
 	while (current != nullptr) {
+
 		Node *minNode = current;
 		Node *nextNode = current->next;
+
 		while (nextNode != nullptr) {
-			if (nextNode->namaPelanggan < minNode->namaPelanggan) {
+
+			if (nextNode->namaPelanggan <
+			    minNode->namaPelanggan) {
+
 				minNode = nextNode;
 			}
+
 			nextNode = nextNode->next;
 		}
+
 		nukerData(current, minNode);
+
 		current = current->next;
 	}
 }
 
 void sortByStatus(Node *head) {
-	if (head == nullptr) {
-		return;
-	}
+
 	Node *current = head;
+
 	while (current != nullptr) {
+
 		Node *minNode = current;
 		Node *nextNode = current->next;
+
 		while (nextNode != nullptr) {
-			if (nextNode->status < minNode->status) {
+
+			if (nextNode->status <
+			    minNode->status) {
+
 				minNode = nextNode;
 			}
+
 			nextNode = nextNode->next;
 		}
+
 		nukerData(current, minNode);
+
 		current = current->next;
 	}
 }
 
 void sortByHarga(Node *head) {
-	if (head == nullptr) {
-		return;
-	}
+
 	Node *current = head;
+
 	while (current != nullptr) {
+
 		Node *minNode = current;
 		Node *nextNode = current->next;
+
 		while (nextNode != nullptr) {
-			if (nextNode->totalHarga < minNode->totalHarga) {
+
+			if (nextNode->totalHarga <
+			    minNode->totalHarga) {
+
 				minNode = nextNode;
 			}
+
 			nextNode = nextNode->next;
 		}
+
 		nukerData(current, minNode);
+
 		current = current->next;
 	}
 }
 
 void sortByBerat(Node *head) {
-	if (head == nullptr) {
-		return;
-	}
+
 	Node *current = head;
+
 	while (current != nullptr) {
+
 		Node *minNode = current;
 		Node *nextNode = current->next;
+
 		while (nextNode != nullptr) {
-			if (nextNode->beratKg < minNode->beratKg) {
+
+			if (nextNode->beratKg <
+			    minNode->beratKg) {
+
 				minNode = nextNode;
 			}
+
 			nextNode = nextNode->next;
 		}
+
 		nukerData(current, minNode);
+
 		current = current->next;
 	}
 }
 
-
-//clear list
 void clearList(Node *&head) {
+
 	while (head != nullptr) {
+
 		Node *toDelete = head;
 		head = head->next;
+
 		delete toDelete;
 	}
+
+	cout << endl;
 	cout << "Semua pesanan berhasil dihapus." << endl;
 }
 
-//menampilkan menu
 void tampilmenu() {
-	cout << "==============================" << endl;
-	cout << "     	Sistem Laundry       " << endl;
-	cout << "==============================" << endl;
-	cout << "1. Tambah Pesanan di Awal" << endl;
-	cout << "2. Tambah Pesanan di Tengah" << endl;
-	cout << "3. Tambah Pesanan di Akhir" << endl;
-	cout << "4. Cetak Semua Pesanan" << endl;
+
+	garis();
+	cout << "             SISTEM LAUNDRY" << endl;
+	garis();
+
+	cout << "1. Tambah Pesanan" << endl;
+	cout << "2. Tampilkan Semua Pesanan" << endl;
+	cout << "3. Cari Pesanan by ID" << endl;
+	cout << "4. Update Status Pesanan" << endl;
 	cout << "5. Hapus Pesanan by ID" << endl;
-	cout << "6. Update Status Pesanan by ID" << endl;
-	cout << "7. Cari Pesanan by ID" << endl;
-	cout << "8. Clear Semua Pesanan" << endl;
-	cout << "9. Statistik Laundry" << endl;
-	cout << "10. Sorting Pesanan" << endl;
-	cout << "11. Keluar" << endl;
-	cout << "==============================" << endl;
+	cout << "6. Sorting Pesanan" << endl;
+	cout << "7. Statistik Laundry" << endl;
+	cout << "8. Hapus Semua Pesanan" << endl;
+	cout << "9. Keluar Program" << endl;
+
+	garis();
 	cout << "Pilih menu: ";
 }
 
-string tampiljenislayanan() {
-	int pilihan;
-	string jenisLayanan;
-
-	cout << "=== Jenis Layanan Laundry ===" << endl;
-	cout << "1. Cuci Kering (Rp 5000/Kg)" << endl;
-	cout << "2. Cuci Setrika (Rp 8000/Kg)" << endl;
-	cout << "3. Setrika Saja (Rp 4000/Kg)" << endl;
-	cout << "==============================" << endl;
-	cout << "Pilih jenis layanan: ";
-	cin >> pilihan;
-	cin.ignore(); // Bersihkan newline
-	if (pilihan < 1 || pilihan > 3) {
-		cout << "Pilihan tidak valid. Program akan keluar." << endl;
-		return "";
-	} else {
-		string jenisLayanan;
-		if (pilihan == 1) {
-			jenisLayanan = "Cuci Kering";
-		} else if (pilihan == 2) {
-			jenisLayanan = "Cuci Setrika";
-		} else {
-			jenisLayanan = "Setrika Saja";
-		}
-		return jenisLayanan;
-	}
-}
-
 int main() {
+
 	Node *head = nullptr;
-	int pilihanMenu = 0;
+
+	int pilihanMenu;
+
+	bool lanjut = true;
 
 	do {
+
 		tampilmenu();
+
 		cin >> pilihanMenu;
 		cin.ignore();
 
 		if (pilihanMenu == 1) {
-			string nama;
-			float berat;
 
-			cout << "==============================" << endl;
-			cout << "Masukkan nama pelanggan: ";
-			getline(cin, nama);
+			int pilihanTambah;
 
-			cout << "Masukkan berat cucian (Kg): ";
-			cin >> berat;
+			garis();
+			cout << "          TAMBAH PESANAN" << endl;
+			garis();
+
+			cout << "1. Tambah di Awal" << endl;
+			cout << "2. Tambah di Tengah" << endl;
+			cout << "3. Tambah di Akhir" << endl;
+
+			garis();
+			cout << "Pilih posisi data: ";
+			cin >> pilihanTambah;
 			cin.ignore();
 
-			string jenisLayanan = tampiljenislayanan();
-			insertDiawal(head, nama, jenisLayanan, berat);
+			string nama;
+			string jenisLayanan;
+			float berat;
+
+			inputDataPesanan(nama,
+			                 berat,
+			                 jenisLayanan);
+
+			if (jenisLayanan != "" &&
+			    berat > 0) {
+
+				if (pilihanTambah == 1) {
+
+					insertDiawal(head,
+					             nama,
+					             jenisLayanan,
+					             berat);
+
+				} else if (pilihanTambah == 2) {
+
+					insertDiTengah(head,
+					               nama,
+					               jenisLayanan,
+					               berat);
+
+				} else if (pilihanTambah == 3) {
+
+					insertDiAkhir(head,
+					              nama,
+					              jenisLayanan,
+					              berat);
+
+				} else {
+
+					cout << endl;
+					cout << "Pilihan posisi tidak valid."
+					     << endl;
+				}
+
+			} else {
+
+				cout << endl;
+				cout << "Pesanan gagal ditambahkan."
+				     << endl;
+			}
 
 		} else if (pilihanMenu == 2) {
-			string nama;
-			float berat;
 
-			cout << "==============================" << endl;
-			cout << "Masukkan nama pelanggan: ";
-			getline(cin, nama);
+			garis();
+			cout << "           DAFTAR PESANAN" << endl;
+			garis();
 
-			cout << "Masukkan berat cucian (Kg): ";
-			cin >> berat;
-			cin.ignore();
-
-			string jenisLayanan = tampiljenislayanan();
-			insertDiTengah(head, nama, jenisLayanan, berat);
-
-		} else if (pilihanMenu == 3) {
-			string nama;
-			float berat;
-
-			cout << "==============================" << endl;
-			cout << "Masukkan nama pelanggan: ";
-			getline(cin, nama);
-
-			cout << "Masukkan berat cucian (Kg): ";
-			cin >> berat;
-			cin.ignore();
-
-			string jenisLayanan = tampiljenislayanan();
-			insertDiAkhir(head, nama, jenisLayanan, berat);
-
-		} else if (pilihanMenu == 4) {
 			cetakList(head);
 
-		} else if (pilihanMenu == 5) {
-			int idHapus;
-			cout << "Masukkan ID pesanan yang ingin dihapus: ";
-			cin >> idHapus;
-			hapusbyID(head, idHapus);
+		} else if (pilihanMenu == 3) {
 
-		} else if (pilihanMenu == 6) {
+			int idCari;
+
+			garis();
+			cout << "            CARI PESANAN" << endl;
+			garis();
+
+			cout << "Masukkan ID pesanan: ";
+			cin >> idCari;
+			cin.ignore();
+
+			Node *foundNode =
+			    caribyID(head, idCari);
+
+			if (foundNode != nullptr) {
+
+				cetakNode(foundNode);
+
+			} else {
+
+				cout << endl;
+				cout << "Pesanan tidak ditemukan."
+				     << endl;
+			}
+
+		} else if (pilihanMenu == 4) {
+
 			int idUpdate;
+			int pilihanStatus;
+
 			string newStatus;
 
-			cout << "Masukkan ID pesanan yang ingin diupdate statusnya: ";
+			garis();
+			cout << "           UPDATE STATUS" << endl;
+			garis();
+
+			cout << "Masukkan ID pesanan: ";
 			cin >> idUpdate;
 			cin.ignore();
 
-			cout << "Masukkan status baru (Sedang Antri/Sedang Diproses/Selesai): ";
-			getline(cin, newStatus);
+			garis();
+			cout << "1. Sedang Antri" << endl;
+			cout << "2. Sedang Diproses" << endl;
+			cout << "3. Selesai" << endl;
+			garis();
 
-			updateStatus(head, idUpdate, newStatus);
+			cout << "Pilih status baru: ";
+			cin >> pilihanStatus;
+			cin.ignore();
 
-		} else if (pilihanMenu == 7) {
-			int idCari;
-			cout << "Masukkan ID pesanan yang ingin dicari: ";
-			cin >> idCari;
-
-			Node *foundNode = caribyID(head, idCari);
-			if (foundNode != nullptr) {
-				cetakNode(foundNode);
-			} else {
-				cout << "Pesanan dengan ID " << idCari << " tidak ditemukan." << endl;
+			if (pilihanStatus == 1) {
+				newStatus = "Sedang Antri";
+			} else if (pilihanStatus == 2) {
+				newStatus = "Sedang Diproses";
+			} else if (pilihanStatus == 3) {
+				newStatus = "Selesai";
 			}
 
+			updateStatus(head,
+			             idUpdate,
+			             newStatus);
+
+		} else if (pilihanMenu == 5) {
+
+			int idHapus;
+
+			garis();
+			cout << "           HAPUS PESANAN" << endl;
+			garis();
+
+			cout << "Masukkan ID pesanan: ";
+			cin >> idHapus;
+			cin.ignore();
+
+			hapusbyID(head, idHapus);
+
+		} else if (pilihanMenu == 6) {
+
+			int pilihanSort;
+
+			garis();
+			cout << "          SORTING PESANAN" << endl;
+			garis();
+
+			cout << "1. Sort by ID" << endl;
+			cout << "2. Sort by Nama" << endl;
+			cout << "3. Sort by Status" << endl;
+			cout << "4. Sort by Harga" << endl;
+			cout << "5. Sort by Berat" << endl;
+
+			garis();
+			cout << "Pilih sorting: ";
+			cin >> pilihanSort;
+			cin.ignore();
+
+			if (pilihanSort == 1) {
+
+				sortById(head);
+
+				cout << endl;
+				cout << "Data berhasil diurutkan by ID."
+				     << endl;
+
+			} else if (pilihanSort == 2) {
+
+				sortByNama(head);
+
+				cout << endl;
+				cout << "Data berhasil diurutkan by Nama."
+				     << endl;
+
+			} else if (pilihanSort == 3) {
+
+				sortByStatus(head);
+
+				cout << endl;
+				cout << "Data berhasil diurutkan by Status."
+				     << endl;
+
+			} else if (pilihanSort == 4) {
+
+				sortByHarga(head);
+
+				cout << endl;
+				cout << "Data berhasil diurutkan by Harga."
+				     << endl;
+
+			} else if (pilihanSort == 5) {
+
+				sortByBerat(head);
+
+				cout << endl;
+				cout << "Data berhasil diurutkan by Berat."
+				     << endl;
+
+			} else {
+
+				cout << endl;
+				cout << "Pilihan sorting tidak valid."
+				     << endl;
+			}
+
+		} else if (pilihanMenu == 7) {
+
+			tampilStatistik(head);
+
 		} else if (pilihanMenu == 8) {
+
 			clearList(head);
 
 		} else if (pilihanMenu == 9) {
-			tampilStatistik(head);
 
-		} else if (pilihanMenu == 10) {
+			cout << endl;
+			cout << "Terima kasih telah menggunakan"
+			     << " sistem laundry." << endl;
 
-			int pilihanSort;
-			cout << "====== Sorting Pesanan ======" << endl;
-			cout << "1. Sort by ID" << endl;
-			cout << "2. Sort by Nama Pelanggan" << endl;
-			cout << "3. Sort by Status" << endl;
-			cout << "4. Sort by Total Harga" << endl;
-			cout << "5. Sort by Berat (Kg)" << endl;
-			cout << "==============================" << endl;
-			cout << "Pilih kriteria sorting: ";
-			cin >> pilihanSort;
-
-			if (pilihanSort == 1) {
-				sortById(head);
-				cout << "Pesanan berhasil diurutkan berdasarkan ID." << endl;
-			} else if (pilihanSort == 2) {
-				sortByNama(head);
-				cout << "Pesanan berhasil diurutkan berdasarkan Nama Pelanggan." << endl;
-			} else if (pilihanSort == 3) {
-				sortByStatus(head);
-				cout << "Pesanan berhasil diurutkan berdasarkan Status." << endl;
-			} else if (pilihanSort == 4) {
-				sortByHarga(head);
-				cout << "Pesanan berhasil diurutkan berdasarkan Total Harga." << endl;
-			} else if (pilihanSort == 5) {
-				sortByBerat(head);
-				cout << "Pesanan berhasil diurutkan berdasarkan Berat (Kg)." << endl;
-			} else {
-				cout << "Pilihan sorting tidak ada." << endl;
-			}
-
-		} else if (pilihanMenu == 11) {
-			cout << "Terima kasih telah menggunakan sistem laundry. Program akan keluar." << endl;
 			clearList(head);
+
 			break;
+
 		} else {
-			cout << "Pilihan tidak valid. Silakan coba lagi." << endl;
+
+			cout << endl;
+			cout << "Pilihan menu tidak valid."
+			     << endl;
 		}
 
-	} while (true);
+		if (pilihanMenu != 9) {
+
+			lanjut = kembaliMenu();
+
+			if (!lanjut) {
+
+				cout << endl;
+				cout << "Program selesai."
+				     << endl;
+
+				clearList(head);
+			}
+
+			cout << endl;
+		}
+
+	} while (lanjut);
 
 	return 0;
 }
