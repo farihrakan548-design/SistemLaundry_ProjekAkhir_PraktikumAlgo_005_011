@@ -396,107 +396,107 @@ void nukerData(Node *a, Node *b) {
 
 // Fungsi untuk mengurutkan pesanan laundry berdasarkan ID
 void sortById(Node *head) {
-	Node *current = head;
-
-	while (current != NULL) {
-		Node *minNode = current;
-		Node *nextNode = current->next;
-
-		while (nextNode != NULL) {
-			if (nextNode->id < minNode->id) {
-				minNode = nextNode;
-			}
-
-			nextNode = nextNode->next;
-		}
-
-		nukerData(current, minNode);
-		current = current->next;
+	if (head == NULL) {
+		return;
 	}
+	bool tukar;
+	Node *current;
+	do {
+		tukar = false;
+		current = head;
+		while (current->next != NULL) {
+			if (current->id > current->next->id) {
+				nukerData(current, current->next);
+				tukar = true;
+			}
+			current = current->next;
+		}
+	} while (tukar);
 }
 
 // Fungsi untuk mengurutkan pesanan laundry berdasarkan nama pelanggan
 void sortByNama(Node *head) {
-	Node *current = head;
-
-	while (current != NULL) {
-		Node *minNode = current;
-		Node *nextNode = current->next;
-
-		while (nextNode != NULL) {
-			if (bandingTeks(nextNode->namaPelanggan, minNode->namaPelanggan) < 0) {
-				minNode = nextNode;
-			}
-
-			nextNode = nextNode->next;
-		}
-
-		nukerData(current, minNode);
-		current = current->next;
+	if (head == NULL) {
+		return;
 	}
+	bool tukar;
+	Node *current;
+	do {
+		tukar = false;
+		current = head;
+		while (current->next != NULL) {
+			if (bandingTeks(current->namaPelanggan,
+							current->next->namaPelanggan) > 0) {
+				nukerData(current, current->next);
+				tukar = true;
+			}
+			current = current->next;
+		}
+	} while (tukar);
 }
 
 // Fungsi untuk mengurutkan pesanan laundry berdasarkan status
 void sortByStatus(Node *head) {
-	Node *current = head;
-
-	while (current != NULL) {
-		Node *minNode = current;
-		Node *nextNode = current->next;
-
-		while (nextNode != NULL) {
-			if (bandingTeks(nextNode->status, minNode->status) < 0) {
-				minNode = nextNode;
-			}
-
-			nextNode = nextNode->next;
-		}
-
-		nukerData(current, minNode);
-		current = current->next;
+	if (head == NULL) {
+		return;
 	}
+	bool tukar;
+	Node *current;
+	do {
+		tukar = false;
+		current = head;
+		while (current->next != NULL) {
+			if (bandingTeks(current->status,
+							current->next->status) > 0) {
+				nukerData(current, current->next);
+				tukar = true;
+			}
+			current = current->next;
+		}
+	} while (tukar);
 }
 
 // Fungsi untuk mengurutkan pesanan laundry berdasarkan harga
 void sortByHarga(Node *head) {
-	Node *current = head;
-
-	while (current != NULL) {
-		Node *minNode = current;
-		Node *nextNode = current->next;
-
-		while (nextNode != NULL) {
-			if (nextNode->totalHarga < minNode->totalHarga) {
-				minNode = nextNode;
-			}
-
-			nextNode = nextNode->next;
-		}
-
-		nukerData(current, minNode);
-		current = current->next;
+	if (head == NULL) {
+		return;
 	}
+	bool tukar;
+	Node *current;
+	do {
+		tukar = false;
+		current = head;
+		while (current->next != NULL) {
+			if (current->totalHarga >
+				current->next->totalHarga) {
+
+				nukerData(current, current->next);
+				tukar = true;
+			}
+			current = current->next;
+		}
+	} while (tukar);
 }
 
 // Fungsi untuk mengurutkan pesanan laundry berdasarkan berat
 void sortByBerat(Node *head) {
-	Node *current = head;
-
-	while (current != NULL) {
-		Node *minNode = current;
-		Node *nextNode = current->next;
-
-		while (nextNode != NULL) {
-			if (nextNode->beratKg < minNode->beratKg) {
-				minNode = nextNode;
-			}
-
-			nextNode = nextNode->next;
-		}
-
-		nukerData(current, minNode);
-		current = current->next;
+	if (head == NULL) {
+		return;
 	}
+	bool tukar;
+	Node *current;
+	do {
+		tukar = false;
+		current = head;
+		while (current->next != NULL) {
+			if (current->beratKg >
+				current->next->beratKg) {
+				nukerData(current, current->next);
+				tukar = true;
+			}
+			current = current->next;
+		}
+	} while (tukar);
 }
 
 // Fungsi untuk menghapus semua pesanan laundry dari daftar
