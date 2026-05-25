@@ -133,19 +133,14 @@ void cetakNode(Node *node) {
 
 	cout << "ID Pesanan      : "
 		 << node->data.id << endl;
-
 	cout << "Nama Pelanggan  : "
 		 << node->data.namaPelanggan << endl;
-
 	cout << "Jenis Layanan   : "
 		 << namaLayanan(node->data.kodeLayanan) << endl;
-
 	cout << "Berat Cucian    : "
 		 << node->data.beratKg << " Kg" << endl;
-
 	cout << "Total Harga     : Rp "
 		 << node->data.totalHarga << endl;
-
 	cout << "Status Laundry  : "
 		 << namaStatus(node->data.kodeStatus) << endl;
 
@@ -160,9 +155,7 @@ void cetakList(Node *head) {
 		cout << "Belum ada pesanan laundry." << endl;
 		return;
 	}
-
 	Node *current = head;
-
 	while (current != NULL) {
 		cetakNode(current);
 		current = current->next;
@@ -173,10 +166,8 @@ void cetakList(Node *head) {
 void insertDiawal(Node *&head, DataLaundry data) {
 
 	Node *newNode = buatNode(data);
-
 	newNode->next = head;
 	head = newNode;
-
 	cout << endl;
 	cout << "Pesanan berhasil ditambahkan di awal."
 		 << endl;
@@ -186,29 +177,22 @@ void insertDiawal(Node *&head, DataLaundry data) {
 void insertDiTengah(Node *&head, DataLaundry data) {
 
 	Node *newNode = buatNode(data);
-
 	if (head == NULL) {
 		head = newNode;
 
 	} else {
-
 		int jumlah = 0;
-
 		Node *current = head;
-
 		while (current != NULL) {
 			jumlah++;
 			current = current->next;
 		}
 
 		int posisi = jumlah / 2;
-
 		current = head;
-
 		for (int i = 1; i < posisi; i++) {
 			current = current->next;
 		}
-
 		newNode->next = current->next;
 		current->next = newNode;
 	}
@@ -225,18 +209,14 @@ void insertDiAkhir(Node *&head, DataLaundry data) {
 
 	if (head == NULL) {
 		head = newNode;
-
 	} else {
-
 		Node *current = head;
 
 		while (current->next != NULL) {
 			current = current->next;
 		}
-
 		current->next = newNode;
 	}
-
 	cout << endl;
 	cout << "Pesanan berhasil ditambahkan di akhir."
 		 << endl;
@@ -246,93 +226,63 @@ void insertDiAkhir(Node *&head, DataLaundry data) {
 Node *caribyID(Node *head, int id) {
 
 	Node *current = head;
-
 	while (current != NULL) {
-
 		if (current->data.id == id) {
 			return current;
 		}
-
 		current = current->next;
 	}
-
 	return NULL;
 }
 
 // Update status
 void updateStatus(Node *head, int id, int statusBaru) {
-
 	Node *current = head;
-
 	while (current != NULL) {
-
 		if (current->data.id == id) {
-
 			current->data.kodeStatus = statusBaru;
-
 			cout << endl;
 			cout << "Status berhasil diupdate." << endl;
-
 			return;
 		}
-
 		current = current->next;
 	}
-
 	cout << endl;
 	cout << "Pesanan tidak ditemukan." << endl;
 }
 
 // Hapus berdasarkan ID
 void hapusbyID(Node *&head, int id) {
-
 	if (head == NULL) {
 		cout << "Data kosong." << endl;
 		return;
 	}
-
 	if (head->data.id == id) {
-
 		Node *hapus = head;
-
 		head = head->next;
-
 		delete hapus;
-
 		cout << "Data berhasil dihapus." << endl;
-
 		return;
 	}
 
 	Node *current = head;
-
 	while (current->next != NULL &&
 		   current->next->data.id != id) {
-
 		current = current->next;
 	}
-
 	if (current->next == NULL) {
-
 		cout << "Data tidak ditemukan." << endl;
-
 		return;
 	}
-
 	Node *hapus = current->next;
-
 	current->next = hapus->next;
-
 	delete hapus;
-
 	cout << "Data berhasil dihapus." << endl;
 }
 
 // Tukar data
 void nukerData(Node *a, Node *b) {
-
 	DataLaundry temp = a->data;
-
 	a->data = b->data;
 	b->data = temp;
 }
@@ -341,53 +291,34 @@ void nukerData(Node *a, Node *b) {
 void sortById(Node *head) {
 
 	bool tukar;
-
 	do {
-
 		tukar = false;
-
 		Node *current = head;
-
 		while (current->next != NULL) {
-
 			if (current->data.id >
 				current->next->data.id) {
-
 				nukerData(current, current->next);
-
 				tukar = true;
 			}
-
 			current = current->next;
 		}
-
 	} while (tukar);
 }
 
 // Bubble Sort Nama
 void sortByNama(Node *head) {
-
 	bool tukar;
-
 	do {
-
 		tukar = false;
-
 		Node *current = head;
-
 		while (current->next != NULL) {
-
 			if (strcmp(current->data.namaPelanggan,
 					   current->next->data.namaPelanggan) > 0) {
-
 				nukerData(current, current->next);
-
 				tukar = true;
 			}
-
 			current = current->next;
 		}
-
 	} while (tukar);
 }
 
@@ -395,127 +326,83 @@ void sortByNama(Node *head) {
 void sortByHarga(Node *head) {
 
 	bool tukar;
-
 	do {
-
 		tukar = false;
-
 		Node *current = head;
-
 		while (current->next != NULL) {
-
 			if (current->data.totalHarga >
 				current->next->data.totalHarga) {
-
 				nukerData(current, current->next);
-
 				tukar = true;
 			}
-
 			current = current->next;
 		}
-
 	} while (tukar);
 }
 
 // Statistik
 int hitungJumlahPesanan(Node *head) {
-
 	int jumlah = 0;
-
 	while (head != NULL) {
 		jumlah++;
 		head = head->next;
 	}
-
 	return jumlah;
 }
-
 float hitungTotalPendapatan(Node *head) {
-
 	float total = 0;
-
 	while (head != NULL) {
-
 		total += head->data.totalHarga;
-
 		head = head->next;
 	}
-
 	return total;
 }
 
 void tampilStatistik(Node *head) {
 
 	garis();
-
 	cout << "          STATISTIK LAUNDRY" << endl;
-
 	garis();
-
 	cout << "Jumlah Pesanan  : "
 		 << hitungJumlahPesanan(head) << endl;
-
 	cout << "Total Pendapatan: Rp "
 		 << hitungTotalPendapatan(head) << endl;
-
 	garis();
 }
 
 // Simpan file TEXT
 void simpanKeFile(Node *head) {
-
 	if (head == NULL) {
-
 		cout << endl;
 		cout << "Tidak ada data." << endl;
-
 		return;
 	}
-
 	char namaFile[100];
-
 	cout << endl;
 	cout << "Masukkan nama file : ";
-
 	cin.getline(namaFile, 100);
-
 	FILE *file = fopen(namaFile, "w");
-
 	if (file == NULL) {
-
 		cout << "File gagal dibuat." << endl;
-
 		return;
 	}
-
 	Node *current = head;
-
 	while (current != NULL) {
-
 		fprintf(file, "%d\n",
 				current->data.id);
-
 		fprintf(file, "%s\n",
 				current->data.namaPelanggan);
-
 		fprintf(file, "%d\n",
 				current->data.kodeLayanan);
-
 		fprintf(file, "%.2f\n",
 				current->data.beratKg);
-
 		fprintf(file, "%.2f\n",
 				current->data.totalHarga);
-
 		fprintf(file, "%d\n",
 				current->data.kodeStatus);
-
 		current = current->next;
 	}
-
 	fclose(file);
-
 	cout << endl;
 	cout << "Data berhasil disimpan." << endl;
 }
@@ -523,24 +410,16 @@ void simpanKeFile(Node *head) {
 // Tambah node dari file
 void tambahNodeDariFile(Node *&head,
 						DataLaundry data) {
-
 	Node *newNode = buatNode(data);
-
 	if (head == NULL) {
-
 		head = newNode;
-
 	} else {
-
 		Node *current = head;
-
 		while (current->next != NULL) {
 			current = current->next;
 		}
-
 		current->next = newNode;
 	}
-
 	if (data.id >= idPelanggan) {
 		idPelanggan = data.id + 1;
 	}
@@ -553,40 +432,27 @@ void bacaFile(Node *&head) {
 
 	cout << endl;
 	cout << "Masukkan nama file : ";
-
 	cin.getline(namaFile, 100);
-
 	FILE *file = fopen(namaFile, "r");
-
 	if (file == NULL) {
-
 		cout << "File tidak ditemukan." << endl;
-
 		return;
 	}
 
 	DataLaundry data;
-
 	while (fscanf(file, "%d\n", &data.id) != EOF) {
-
 		fgets(data.namaPelanggan, 100, file);
-
 		data.namaPelanggan[
 			strcspn(data.namaPelanggan, "\n")
 		] = '\0';
-
 		fscanf(file, "%d\n",
 			   &data.kodeLayanan);
-
 		fscanf(file, "%f\n",
 			   &data.beratKg);
-
 		fscanf(file, "%f\n",
 			   &data.totalHarga);
-
 		fscanf(file, "%d\n",
 			   &data.kodeStatus);
-
 		tambahNodeDariFile(head, data);
 	}
 
@@ -600,11 +466,8 @@ void bacaFile(Node *&head) {
 void clearList(Node *&head) {
 
 	while (head != NULL) {
-
 		Node *hapus = head;
-
 		head = head->next;
-
 		delete hapus;
 	}
 }
@@ -628,90 +491,61 @@ void tampilmenu() {
 	cout << "8. Simpan File" << endl;
 	cout << "9. Baca File" << endl;
 	cout << "10. Keluar" << endl;
-
 	garis();
-
 	cout << "Pilih menu : ";
 }
 
 int main() {
 
 	Node *head = NULL;
-
 	int menu;
-
 	do {
-
 		tampilmenu();
-
 		cin >> menu;
 		cin.ignore();
-
 		if (menu == 1) {
-
 			int posisi;
-
 			cout << "1. Awal" << endl;
 			cout << "2. Tengah" << endl;
 			cout << "3. Akhir" << endl;
-
 			cout << "Pilih posisi : ";
-
 			cin >> posisi;
 			cin.ignore();
 
 			DataLaundry data =
 				inputDataPesanan();
-
 			if (posisi == 1) {
-
 				insertDiawal(head, data);
-
 			} else if (posisi == 2) {
-
 				insertDiTengah(head, data);
-
 			} else if (posisi == 3) {
-
 				insertDiAkhir(head, data);
 			}
 
 		} else if (menu == 2) {
-
 			cetakList(head);
-
 		} else if (menu == 3) {
 
 			int id;
-
 			cout << "Masukkan ID : ";
 			cin >> id;
 			cin.ignore();
 
 			Node *hasil =
 				caribyID(head, id);
-
 			if (hasil != NULL) {
-
 				cetakNode(hasil);
-
 			} else {
-
 				cout << "Data tidak ditemukan."
 					 << endl;
 			}
-
 		} else if (menu == 4) {
-
 			int id, status;
-
 			cout << "Masukkan ID : ";
 			cin >> id;
-
 			cout << "1. Sedang Antri" << endl;
 			cout << "2. Sedang Diproses" << endl;
 			cout << "3. Selesai" << endl;
-
 			cout << "Pilih status : ";
 			cin >> status;
 			cin.ignore();
@@ -719,64 +553,42 @@ int main() {
 			updateStatus(head, id, status);
 
 		} else if (menu == 5) {
-
 			int id;
-
 			cout << "Masukkan ID : ";
 			cin >> id;
 			cin.ignore();
 
 			hapusbyID(head, id);
-
 		} else if (menu == 6) {
 
 			int pilihSort;
-
 			cout << "1. Sort ID" << endl;
 			cout << "2. Sort Nama" << endl;
 			cout << "3. Sort Harga" << endl;
-
 			cout << "Pilih : ";
-
 			cin >> pilihSort;
 			cin.ignore();
 
 			if (pilihSort == 1) {
-
 				sortById(head);
-
 			} else if (pilihSort == 2) {
-
 				sortByNama(head);
-
 			} else if (pilihSort == 3) {
-
 				sortByHarga(head);
 			}
-
 			cout << "Sorting berhasil." << endl;
 
 		} else if (menu == 7) {
-
 			tampilStatistik(head);
-
 		} else if (menu == 8) {
-
 			simpanKeFile(head);
-
 		} else if (menu == 9) {
-
 			bacaFile(head);
-
 		} else if (menu == 10) {
-
 			cout << endl;
 			cout << "Terima kasih." << endl;
-
 			clearList(head);
 		}
-
 	} while (menu != 10);
-
 	return 0;
 }
