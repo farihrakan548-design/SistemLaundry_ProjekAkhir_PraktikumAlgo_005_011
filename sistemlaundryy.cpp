@@ -3,14 +3,19 @@
 #include <stdio.h>
 using namespace std;
 
-// Struktur data untuk menyimpan informasi pesanan laundry
-struct Node {
+// Struktur data utama untuk menyimpan informasi pesanan laundry
+struct DataLaundry {
 	int id;
 	char namaPelanggan[100];
-	char jenisLayanan[50];
+	int kodeLayanan;
 	float beratKg;
 	float totalHarga;
-	char status[50];
+	int kodeStatus;
+};
+
+// Node linked list menyimpan satu data laundry
+struct Node {
+	DataLaundry data;
 	Node *next;
 };
 
@@ -20,61 +25,45 @@ void garis() {
 	cout << "========================================" << endl;
 }
 
-// Fungsi untuk menyalin teks tanpa string.h
-void salinTeks(char tujuan[], const char sumber[]) {
-	int i = 0;
-
-	while (sumber[i] != '\0') {
-		tujuan[i] = sumber[i];
-		i++;
-	}
-
-	tujuan[i] = '\0';
-}
-
-// Fungsi untuk membandingkan dua teks tanpa string.h
-int bandingTeks(const char a[], const char b[]) {
-	int i = 0;
-
-	while (a[i] != '\0' && b[i] != '\0') {
-		if (a[i] < b[i]) {
-			return -1;
-		} else if (a[i] > b[i]) {
-			return 1;
-		}
-
-		i++;
-	}
-
-	if (a[i] == '\0' && b[i] == '\0') {
-		return 0;
-	} else if (a[i] == '\0') {
-		return -1;
+// Mengubah kode layanan menjadi teks
+const char *namaLayanan(int kodeLayanan) {
+	if (kodeLayanan == 1) {
+		return "Cuci Kering";
+	} else if (kodeLayanan == 2) {
+		return "Cuci Setrika";
+	} else if (kodeLayanan == 3) {
+		return "Setrika Saja";
 	} else {
-		return 1;
+		return "Tidak Diketahui";
 	}
 }
 
-// Fungsi untuk mengecek dua teks sama atau tidak
-bool samaTeks(const char a[], const char b[]) {
-	return bandingTeks(a, b) == 0;
-}
-
-// Fungsi untuk menghapus enter dari hasil fgets
-void hapusEnter(char teks[]) {
-	int i = 0;
-
-	while (teks[i] != '\0') {
-		if (teks[i] == '\n' || teks[i] == '\r') {
-			teks[i] = '\0';
-			return;
-		}
-
-		i++;
+// Mengubah kode status menjadi teks
+const char *namaStatus(int kodeStatus) {
+	if (kodeStatus == 1) {
+		return "Sedang Antri";
+	} else if (kodeStatus == 2) {
+		return "Sedang Diproses";
+	} else if (kodeStatus == 3) {
+		return "Selesai";
+	} else {
+		return "Tidak Diketahui";
 	}
 }
 
-// Fungsi untuk menanyakan apakah pengguna ingin kembali ke menu utama
+// Menentukan harga per kg berdasarkan kode layanan
+float hargaPerKg(int kodeLayanan) {
+	if (kodeLayanan == 1) {
+		return 5000;
+	} else if (kodeLayanan == 2) {
+		return 8000;
+	} else if (kodeLayanan == 3) {
+		return 4000;
+	} else {
+		return 0;
+	}
+}
+
 bool kembaliMenu() {
 	char pilih;
 
@@ -86,47 +75,73 @@ bool kembaliMenu() {
 	return pilih == 'Y' || pilih == 'y';
 }
 
-// Fungsi untuk membuat node baru dengan data pesanan laundry
-Node *buatNode(const char nama[], const char layanan[], float berat) {
+int tampiljenislayanan() {
+	int pilihan;
+
+	garis();
+	cout << "             JENIS LAYANAN" << endl;
+	garis();
+	cout << "1. Cuci Kering   - Rp 5000/Kg" << endl;
+	cout << "2. Cuci Setrika  - Rp 8000/Kg" << endl;
+	cout << "3. Setrika Saja  - Rp 4000/Kg" << endl;
+	garis();
+
+	cout << "Pilih layanan: ";
+	cin >> pilihan;
+	cin.ignore();
+
+	if (pilihan >= 1 && pilihan <= 3) {
+		return pilihan;
+	} else {
+		return 0;
+	}
+}
+
+DataLaundry inputDataPesanan() {
+	DataLaundry data;
+
+	garis();
+	cout << "            INPUT PESANAN" << endl;
+	garis();
+
+	data.id = idPelanggan++;
+
+	cout << "Masukkan nama pelanggan : ";
+	cin.getline(data.namaPelanggan, 100);
+
+	cout << "Masukkan berat cucian   : ";
+	cin >> data.beratKg;
+	cin.ignore();
+
+	data.kodeLayanan = tampiljenislayanan();
+	data.totalHarga = data.beratKg * hargaPerKg(data.kodeLayanan);
+	data.kodeStatus = 1;
+
+	return data;
+}
+
+Node *buatNode(DataLaundry data) {
 	Node *newNode = new Node;
 
-	newNode->id = idPelanggan++;
-	salinTeks(newNode->namaPelanggan, nama);
-	salinTeks(newNode->jenisLayanan, layanan);
-	newNode->beratKg = berat;
-	salinTeks(newNode->status, "Sedang Antri");
+	newNode->data = data;
 	newNode->next = NULL;
-
-	float hargaPerKg = 0;
-
-	if (samaTeks(layanan, "Cuci Kering")) {
-		hargaPerKg = 5000;
-	} else if (samaTeks(layanan, "Cuci Setrika")) {
-		hargaPerKg = 8000;
-	} else if (samaTeks(layanan, "Setrika Saja")) {
-		hargaPerKg = 4000;
-	}
-
-	newNode->totalHarga = berat * hargaPerKg;
 
 	return newNode;
 }
 
-// Fungsi untuk mencetak detail pesanan laundry
 void cetakNode(Node *node) {
 	garis();
 	cout << "            DETAIL PESANAN" << endl;
 	garis();
-	cout << "ID Pesanan      : " << node->id << endl;
-	cout << "Nama Pelanggan  : " << node->namaPelanggan << endl;
-	cout << "Jenis Layanan   : " << node->jenisLayanan << endl;
-	cout << "Berat Cucian    : " << node->beratKg << " Kg" << endl;
-	cout << "Total Harga     : Rp " << node->totalHarga << endl;
-	cout << "Status Laundry  : " << node->status << endl;
+	cout << "ID Pesanan      : " << node->data.id << endl;
+	cout << "Nama Pelanggan  : " << node->data.namaPelanggan << endl;
+	cout << "Jenis Layanan   : " << namaLayanan(node->data.kodeLayanan) << endl;
+	cout << "Berat Cucian    : " << node->data.beratKg << " Kg" << endl;
+	cout << "Total Harga     : Rp " << node->data.totalHarga << endl;
+	cout << "Status Laundry  : " << namaStatus(node->data.kodeStatus) << endl;
 	garis();
 }
 
-// Fungsi untuk mencetak semua pesanan laundry dalam bentuk daftar
 void cetakList(Node *head) {
 	if (head == NULL) {
 		cout << endl;
@@ -142,85 +157,51 @@ void cetakList(Node *head) {
 	}
 }
 
-// Fungsi untuk menampilkan pilihan jenis layanan laundry
-void tampiljenislayanan(char jenisLayanan[]) {
-	int pilihan;
-
-	garis();
-	cout << "             JENIS LAYANAN" << endl;
-	garis();
-	cout << "1. Cuci Kering   - Rp 5000/Kg" << endl;
-	cout << "2. Cuci Setrika  - Rp 8000/Kg" << endl;
-	cout << "3. Setrika Saja  - Rp 4000/Kg" << endl;
-	garis();
-
-	cout << "Pilih layanan: ";
-	cin >> pilihan;
-	cin.ignore();
-
-	if (pilihan == 1) {
-		salinTeks(jenisLayanan, "Cuci Kering");
-	} else if (pilihan == 2) {
-		salinTeks(jenisLayanan, "Cuci Setrika");
-	} else if (pilihan == 3) {
-		salinTeks(jenisLayanan, "Setrika Saja");
-	} else {
-		salinTeks(jenisLayanan, "");
-	}
-}
-
-// Fungsi untuk menginput data pesanan laundry dari pengguna
-void inputDataPesanan(char nama[], float &berat, char jenisLayanan[]) {
-	garis();
-	cout << "            INPUT PESANAN" << endl;
-	garis();
-
-	cout << "Masukkan nama pelanggan : ";
-	cin.getline(nama, 100);
-
-	cout << "Masukkan berat cucian   : ";
-	cin >> berat;
-	cin.ignore();
-
-	tampiljenislayanan(jenisLayanan);
-}
-
-// Fungsi untuk menambahkan pesanan laundry baru di awal
-void insertDiawal(Node *&head, const char nama[], const char layanan[], float berat) {
-	Node *newNode = buatNode(nama, layanan, berat);
+void insertDiawal(Node *&head, DataLaundry data) {
+	Node *newNode = buatNode(data);
 
 	newNode->next = head;
 	head = newNode;
 
 	cout << endl;
 	cout << "Pesanan berhasil ditambahkan di awal." << endl;
-	cout << "ID Pesanan : " << newNode->id << endl;
+	cout << "ID Pesanan : " << newNode->data.id << endl;
 }
 
-// Fungsi untuk menambahkan pesanan laundry baru di tengah
-void insertDiTengah(Node *&head, const char nama[], const char layanan[], float berat) {
-	Node *newNode = buatNode(nama, layanan, berat);
+void insertDiTengah(Node *&head, DataLaundry data) {
+	Node *newNode = buatNode(data);
 
 	if (head == NULL) {
 		head = newNode;
+	} else if (head->next == NULL) {
+		head->next = newNode;
 	} else {
+		int jumlah = 0;
 		Node *current = head;
 
-		while (current->next != NULL) {
+		while (current != NULL) {
+			jumlah++;
 			current = current->next;
 		}
 
+		int posisiTengah = jumlah / 2;
+		current = head;
+
+		for (int i = 1; i < posisiTengah; i++) {
+			current = current->next;
+		}
+
+		newNode->next = current->next;
 		current->next = newNode;
 	}
 
 	cout << endl;
 	cout << "Pesanan berhasil ditambahkan di tengah." << endl;
-	cout << "ID Pesanan : " << newNode->id << endl;
+	cout << "ID Pesanan : " << newNode->data.id << endl;
 }
 
-// Fungsi untuk menambahkan pesanan laundry baru di akhir
-void insertDiAkhir(Node *&head, const char nama[], const char layanan[], float berat) {
-	Node *newNode = buatNode(nama, layanan, berat);
+void insertDiAkhir(Node *&head, DataLaundry data) {
+	Node *newNode = buatNode(data);
 
 	if (head == NULL) {
 		head = newNode;
@@ -236,10 +217,9 @@ void insertDiAkhir(Node *&head, const char nama[], const char layanan[], float b
 
 	cout << endl;
 	cout << "Pesanan berhasil ditambahkan di akhir." << endl;
-	cout << "ID Pesanan : " << newNode->id << endl;
+	cout << "ID Pesanan : " << newNode->data.id << endl;
 }
 
-// Fungsi untuk menghapus pesanan laundry berdasarkan ID
 void hapusbyID(Node *&head, int id) {
 	if (head == NULL) {
 		cout << endl;
@@ -247,13 +227,13 @@ void hapusbyID(Node *&head, int id) {
 		return;
 	}
 
-	if (head->id == id) {
+	if (head->data.id == id) {
 		Node *toDelete = head;
 		head = head->next;
 
 		cout << endl;
 		cout << "Pesanan ID " << id << " atas nama "
-			 << toDelete->namaPelanggan << " berhasil dihapus." << endl;
+			 << toDelete->data.namaPelanggan << " berhasil dihapus." << endl;
 
 		delete toDelete;
 		return;
@@ -261,7 +241,7 @@ void hapusbyID(Node *&head, int id) {
 
 	Node *current = head;
 
-	while (current->next != NULL && current->next->id != id) {
+	while (current->next != NULL && current->next->data.id != id) {
 		current = current->next;
 	}
 
@@ -276,23 +256,22 @@ void hapusbyID(Node *&head, int id) {
 
 	cout << endl;
 	cout << "Pesanan ID " << id << " atas nama "
-		 << toDelete->namaPelanggan << " berhasil dihapus." << endl;
+		 << toDelete->data.namaPelanggan << " berhasil dihapus." << endl;
 
 	delete toDelete;
 }
 
-// Fungsi untuk memperbarui status pesanan laundry berdasarkan ID
-void updateStatus(Node *head, int id, const char newStatus[]) {
+void updateStatus(Node *head, int id, int kodeStatusBaru) {
 	Node *current = head;
 
 	while (current != NULL) {
-		if (current->id == id) {
-			salinTeks(current->status, newStatus);
+		if (current->data.id == id) {
+			current->data.kodeStatus = kodeStatusBaru;
 
 			cout << endl;
 			cout << "Status pesanan berhasil diperbarui." << endl;
 			cout << "ID Pesanan  : " << id << endl;
-			cout << "Status Baru : " << newStatus << endl;
+			cout << "Status Baru : " << namaStatus(kodeStatusBaru) << endl;
 			return;
 		}
 
@@ -303,12 +282,11 @@ void updateStatus(Node *head, int id, const char newStatus[]) {
 	cout << "Pesanan tidak ditemukan." << endl;
 }
 
-// Fungsi untuk mencari pesanan laundry berdasarkan ID
 Node *caribyID(Node *head, int id) {
 	Node *current = head;
 
 	while (current != NULL) {
-		if (current->id == id) {
+		if (current->data.id == id) {
 			return current;
 		}
 
@@ -333,7 +311,7 @@ float hitungTotalPendapatan(Node *head) {
 	float total = 0;
 
 	while (head != NULL) {
-		total += head->totalHarga;
+		total += head->data.totalHarga;
 		head = head->next;
 	}
 
@@ -344,7 +322,7 @@ int hitungPesananSelesai(Node *head) {
 	int jumlah = 0;
 
 	while (head != NULL) {
-		if (samaTeks(head->status, "Selesai")) {
+		if (head->data.kodeStatus == 3) {
 			jumlah++;
 		}
 
@@ -354,7 +332,6 @@ int hitungPesananSelesai(Node *head) {
 	return jumlah;
 }
 
-// Fungsi untuk menampilkan statistik laundry
 void tampilStatistik(Node *head) {
 	garis();
 	cout << "          STATISTIK LAUNDRY" << endl;
@@ -366,35 +343,11 @@ void tampilStatistik(Node *head) {
 }
 
 void nukerData(Node *a, Node *b) {
-	int tempId = a->id;
-	a->id = b->id;
-	b->id = tempId;
-
-	char tempNama[100];
-	salinTeks(tempNama, a->namaPelanggan);
-	salinTeks(a->namaPelanggan, b->namaPelanggan);
-	salinTeks(b->namaPelanggan, tempNama);
-
-	char tempLayanan[50];
-	salinTeks(tempLayanan, a->jenisLayanan);
-	salinTeks(a->jenisLayanan, b->jenisLayanan);
-	salinTeks(b->jenisLayanan, tempLayanan);
-
-	float tempBerat = a->beratKg;
-	a->beratKg = b->beratKg;
-	b->beratKg = tempBerat;
-
-	float tempHarga = a->totalHarga;
-	a->totalHarga = b->totalHarga;
-	b->totalHarga = tempHarga;
-
-	char tempStatus[50];
-	salinTeks(tempStatus, a->status);
-	salinTeks(a->status, b->status);
-	salinTeks(b->status, tempStatus);
+	DataLaundry temp = a->data;
+	a->data = b->data;
+	b->data = temp;
 }
 
-// Fungsi untuk mengurutkan pesanan laundry berdasarkan ID
 void sortById(Node *head) {
 	Node *current = head;
 
@@ -403,7 +356,7 @@ void sortById(Node *head) {
 		Node *nextNode = current->next;
 
 		while (nextNode != NULL) {
-			if (nextNode->id < minNode->id) {
+			if (nextNode->data.id < minNode->data.id) {
 				minNode = nextNode;
 			}
 
@@ -415,28 +368,6 @@ void sortById(Node *head) {
 	}
 }
 
-// Fungsi untuk mengurutkan pesanan laundry berdasarkan nama pelanggan
-void sortByNama(Node *head) {
-	Node *current = head;
-
-	while (current != NULL) {
-		Node *minNode = current;
-		Node *nextNode = current->next;
-
-		while (nextNode != NULL) {
-			if (bandingTeks(nextNode->namaPelanggan, minNode->namaPelanggan) < 0) {
-				minNode = nextNode;
-			}
-
-			nextNode = nextNode->next;
-		}
-
-		nukerData(current, minNode);
-		current = current->next;
-	}
-}
-
-// Fungsi untuk mengurutkan pesanan laundry berdasarkan status
 void sortByStatus(Node *head) {
 	Node *current = head;
 
@@ -445,7 +376,7 @@ void sortByStatus(Node *head) {
 		Node *nextNode = current->next;
 
 		while (nextNode != NULL) {
-			if (bandingTeks(nextNode->status, minNode->status) < 0) {
+			if (nextNode->data.kodeStatus < minNode->data.kodeStatus) {
 				minNode = nextNode;
 			}
 
@@ -457,7 +388,6 @@ void sortByStatus(Node *head) {
 	}
 }
 
-// Fungsi untuk mengurutkan pesanan laundry berdasarkan harga
 void sortByHarga(Node *head) {
 	Node *current = head;
 
@@ -466,7 +396,7 @@ void sortByHarga(Node *head) {
 		Node *nextNode = current->next;
 
 		while (nextNode != NULL) {
-			if (nextNode->totalHarga < minNode->totalHarga) {
+			if (nextNode->data.totalHarga < minNode->data.totalHarga) {
 				minNode = nextNode;
 			}
 
@@ -478,7 +408,6 @@ void sortByHarga(Node *head) {
 	}
 }
 
-// Fungsi untuk mengurutkan pesanan laundry berdasarkan berat
 void sortByBerat(Node *head) {
 	Node *current = head;
 
@@ -487,7 +416,7 @@ void sortByBerat(Node *head) {
 		Node *nextNode = current->next;
 
 		while (nextNode != NULL) {
-			if (nextNode->beratKg < minNode->beratKg) {
+			if (nextNode->data.beratKg < minNode->data.beratKg) {
 				minNode = nextNode;
 			}
 
@@ -499,7 +428,6 @@ void sortByBerat(Node *head) {
 	}
 }
 
-// Fungsi untuk menghapus semua pesanan laundry dari daftar
 void clearList(Node *&head) {
 	while (head != NULL) {
 		Node *toDelete = head;
@@ -510,25 +438,17 @@ void clearList(Node *&head) {
 
 void hapusSemuaPesanan(Node *&head) {
 	clearList(head);
+	idPelanggan = 1;
+
 	cout << endl;
 	cout << "Semua pesanan berhasil dihapus." << endl;
 }
 
-// Fungsi untuk menambahkan node pesanan laundry dari data yang dibaca dari file
-void tambahNodeDariFile(Node *&head, int id, const char nama[], const char layanan[],
-						float berat, float harga, const char status[]) {
-	Node *newNode = new Node;
+void tambahNodeDariFile(Node *&head, DataLaundry data) {
+	Node *newNode = buatNode(data);
 
-	newNode->id = id;
-	salinTeks(newNode->namaPelanggan, nama);
-	salinTeks(newNode->jenisLayanan, layanan);
-	newNode->beratKg = berat;
-	newNode->totalHarga = harga;
-	salinTeks(newNode->status, status);
-	newNode->next = NULL;
-
-	if (id >= idPelanggan) {
-		idPelanggan = id + 1;
+	if (data.id >= idPelanggan) {
+		idPelanggan = data.id + 1;
 	}
 
 	if (head == NULL) {
@@ -544,8 +464,13 @@ void tambahNodeDariFile(Node *&head, int id, const char nama[], const char layan
 	}
 }
 
-// Fungsi untuk menyimpan data pesanan laundry ke file menggunakan stdio.h
 void simpanKeFile(Node *head) {
+	if (head == NULL) {
+		cout << endl;
+		cout << "Tidak ada data untuk disimpan." << endl;
+		return;
+	}
+
 	char namaFile[100];
 
 	cout << endl;
@@ -553,7 +478,7 @@ void simpanKeFile(Node *head) {
 	cin.getline(namaFile, 100);
 
 	FILE *file;
-	file = fopen(namaFile, "w");
+	file = fopen(namaFile, "wb");
 
 	if (file == NULL) {
 		cout << endl;
@@ -564,13 +489,7 @@ void simpanKeFile(Node *head) {
 	Node *current = head;
 
 	while (current != NULL) {
-		fprintf(file, "%d\n", current->id);
-		fprintf(file, "%s\n", current->namaPelanggan);
-		fprintf(file, "%s\n", current->jenisLayanan);
-		fprintf(file, "%.2f\n", current->beratKg);
-		fprintf(file, "%.2f\n", current->totalHarga);
-		fprintf(file, "%s\n", current->status);
-
+		fwrite(&current->data, sizeof(DataLaundry), 1, file);
 		current = current->next;
 	}
 
@@ -580,7 +499,6 @@ void simpanKeFile(Node *head) {
 	cout << "Data berhasil disimpan ke file: " << namaFile << endl;
 }
 
-// Fungsi untuk membaca data pesanan laundry dari file menggunakan stdio.h
 void bacaFile(Node *&head) {
 	char namaFile[100];
 
@@ -589,7 +507,7 @@ void bacaFile(Node *&head) {
 	cin.getline(namaFile, 100);
 
 	FILE *file;
-	file = fopen(namaFile, "r");
+	file = fopen(namaFile, "rb");
 
 	if (file == NULL) {
 		cout << endl;
@@ -600,47 +518,10 @@ void bacaFile(Node *&head) {
 	clearList(head);
 	idPelanggan = 1;
 
-	char baris[200];
-	char nama[100];
-	char layanan[50];
-	char status[50];
+	DataLaundry data;
 
-	int id;
-	float berat;
-	float harga;
-
-	while (fgets(baris, 200, file) != NULL) {
-		hapusEnter(baris);
-		id = atoi(baris);
-
-		if (fgets(nama, 100, file) == NULL) {
-			break;
-		}
-		hapusEnter(nama);
-
-		if (fgets(layanan, 50, file) == NULL) {
-			break;
-		}
-		hapusEnter(layanan);
-
-		if (fgets(baris, 200, file) == NULL) {
-			break;
-		}
-		hapusEnter(baris);
-		berat = atof(baris);
-
-		if (fgets(baris, 200, file) == NULL) {
-			break;
-		}
-		hapusEnter(baris);
-		harga = atof(baris);
-
-		if (fgets(status, 50, file) == NULL) {
-			break;
-		}
-		hapusEnter(status);
-
-		tambahNodeDariFile(head, id, nama, layanan, berat, harga, status);
+	while (fread(&data, sizeof(DataLaundry), 1, file) == 1) {
+		tambahNodeDariFile(head, data);
 	}
 
 	fclose(file);
@@ -651,7 +532,6 @@ void bacaFile(Node *&head) {
 	cetakList(head);
 }
 
-// Fungsi untuk menampilkan menu utama sistem laundry
 void tampilmenu() {
 	garis();
 	cout << "             SISTEM LAUNDRY" << endl;
@@ -671,7 +551,6 @@ void tampilmenu() {
 	cout << "Pilih menu: ";
 }
 
-// Fungsi utama untuk menjalankan program sistem laundry
 int main() {
 	Node *head = NULL;
 
@@ -699,19 +578,15 @@ int main() {
 			cin >> pilihanTambah;
 			cin.ignore();
 
-			char nama[100];
-			char jenisLayanan[50];
-			float berat;
+			DataLaundry data = inputDataPesanan();
 
-			inputDataPesanan(nama, berat, jenisLayanan);
-
-			if (!samaTeks(jenisLayanan, "") && berat > 0) {
+			if (data.kodeLayanan != 0 && data.beratKg > 0) {
 				if (pilihanTambah == 1) {
-					insertDiawal(head, nama, jenisLayanan, berat);
+					insertDiawal(head, data);
 				} else if (pilihanTambah == 2) {
-					insertDiTengah(head, nama, jenisLayanan, berat);
+					insertDiTengah(head, data);
 				} else if (pilihanTambah == 3) {
-					insertDiAkhir(head, nama, jenisLayanan, berat);
+					insertDiAkhir(head, data);
 				} else {
 					cout << endl;
 					cout << "Pilihan posisi tidak valid." << endl;
@@ -750,9 +625,6 @@ int main() {
 		} else if (pilihanMenu == 4) {
 			int idUpdate;
 			int pilihanStatus;
-			char newStatus[50];
-
-			salinTeks(newStatus, "");
 
 			garis();
 			cout << "           UPDATE STATUS" << endl;
@@ -772,16 +644,8 @@ int main() {
 			cin >> pilihanStatus;
 			cin.ignore();
 
-			if (pilihanStatus == 1) {
-				salinTeks(newStatus, "Sedang Antri");
-			} else if (pilihanStatus == 2) {
-				salinTeks(newStatus, "Sedang Diproses");
-			} else if (pilihanStatus == 3) {
-				salinTeks(newStatus, "Selesai");
-			}
-
-			if (!samaTeks(newStatus, "")) {
-				updateStatus(head, idUpdate, newStatus);
+			if (pilihanStatus >= 1 && pilihanStatus <= 3) {
+				updateStatus(head, idUpdate, pilihanStatus);
 			} else {
 				cout << endl;
 				cout << "Pilihan status tidak valid." << endl;
@@ -807,10 +671,9 @@ int main() {
 			cout << "          SORTING PESANAN" << endl;
 			garis();
 			cout << "1. Sort by ID" << endl;
-			cout << "2. Sort by Nama" << endl;
-			cout << "3. Sort by Status" << endl;
-			cout << "4. Sort by Harga" << endl;
-			cout << "5. Sort by Berat" << endl;
+			cout << "2. Sort by Status" << endl;
+			cout << "3. Sort by Harga" << endl;
+			cout << "4. Sort by Berat" << endl;
 			garis();
 
 			cout << "Pilih sorting: ";
@@ -825,18 +688,14 @@ int main() {
 				cout << endl;
 				cout << "Data berhasil diurutkan berdasarkan ID." << endl;
 			} else if (pilihanSort == 2) {
-				sortByNama(head);
-				cout << endl;
-				cout << "Data berhasil diurutkan berdasarkan nama." << endl;
-			} else if (pilihanSort == 3) {
 				sortByStatus(head);
 				cout << endl;
 				cout << "Data berhasil diurutkan berdasarkan status." << endl;
-			} else if (pilihanSort == 4) {
+			} else if (pilihanSort == 3) {
 				sortByHarga(head);
 				cout << endl;
 				cout << "Data berhasil diurutkan berdasarkan harga." << endl;
-			} else if (pilihanSort == 5) {
+			} else if (pilihanSort == 4) {
 				sortByBerat(head);
 				cout << endl;
 				cout << "Data berhasil diurutkan berdasarkan berat." << endl;
